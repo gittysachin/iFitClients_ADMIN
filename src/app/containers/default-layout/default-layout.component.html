@@ -1,0 +1,51 @@
+<app-header [navbarBrandRouterLink]="['/dashboard']" [fixed]="true"
+  [navbarBrandFull]="{src: 'assets/img/brand/logo-panel.png', height: 25, alt: 'IFITClients Logo'}"
+  [sidebarToggler]="'lg'" [asideMenuToggler]="'lg'">
+  <ul class="nav navbar-nav ml-auto">
+    <!-- <li class="nav-item d-md-down-none">
+      <a class="nav-link" href="#"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">5</span></a>
+    </li>
+    <li class="nav-item d-md-down-none">
+      <a class="nav-link" href="#"><i class="icon-list"></i></a>
+    </li> -->
+    <li class="nav-item d-md-down-none">
+      <span style="font-size: 16px;color: #fff;"><b>Welcome : </b>{{_userDetails.LastName}}
+        {{_userDetails.FirstName}}</span>
+    </li>
+    <li class="nav-item dropdown" dropdown placement="bottom right">
+      <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
+        dropdownToggle (click)="false">
+        <img src="{{_userDetails.userImage}}" class="img-avatar" alt="{{_userDetails.LastName}}
+        {{_userDetails.FirstName}}" />
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
+        <a class="dropdown-item" href="javascript:void(0)" (click)="gotoProfile()"><i class="fa fa-user"></i>
+          Profile</a>
+        <a class="dropdown-item" href="javascript:void(0)" (click)="logMeOut()"><i class="fa fa-lock"></i> Logout</a>
+      </div>
+    </li>
+  </ul>
+</app-header>
+<div class="app-body">
+  <app-sidebar id="root" [fixed]="true" [display]="'lg'">
+    <app-sidebar-nav [navItems]="navItem" [perfectScrollbar] [disabled]="sidebarMinimized"></app-sidebar-nav>
+    <app-sidebar-minimizer></app-sidebar-minimizer>
+  </app-sidebar>
+  <app-sidebar id="child" [fixed]="true" [display]="'lg'" style="display: none;">
+    <div class="sidebar-profile-image">
+      <img src="{{_userDetails.userImage}}" alt="user-profile-image" />
+    </div>
+    <app-sidebar-nav [navItems]="SubnavItems" [perfectScrollbar] [disabled]="sidebarMinimized"></app-sidebar-nav>
+    <app-sidebar-minimizer></app-sidebar-minimizer>
+  </app-sidebar>
+  <main class="main">
+    <div class="space"></div>
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>
+<app-footer>
+  <!-- <strong>Copyright © 2019 <a style="color: #F79633;" href="https://www.grambazar.com">Grambazar.com</a>.</strong>&nbsp;All rights reserved. -->
+  <strong>Copyright © 2020</strong>
+</app-footer>

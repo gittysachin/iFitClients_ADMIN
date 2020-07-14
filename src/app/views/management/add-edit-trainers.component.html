@@ -1,0 +1,156 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <strong>{{_title}} Trainer</strong>
+            <button style="float: right;background: rgb(38, 153, 251);;width: 100px;" class="btn btn-block btn-primary"
+                type="button" (click)="BackToList()">
+                <i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;Back
+            </button>
+        </div>
+        <div class="card-body">
+            <form name="UsesAddEdit" (ngSubmit)="f.form.valid && SaveUsers()" #f="ngForm"
+                [mustMatch]="['password', 'confirmPassword']" novalidate>
+                <div class="col-12">
+                    <h4>General Information</h4>
+                    <hr />
+                </div>
+                <div class="row col-12">
+                    <div class="col-3  mb-3">
+                        <input
+                            [ngClass]="{ 'is-invalid': f.submitted && FirstName.invalid && (FirstName.dirty || FirstName.touched)}"
+                            class="form-control" placeholder="First Name" name="FirstName" id="FirstName"
+                            [(ngModel)]="_user.FirstName" #FirstName="ngModel" required />
+                        <div *ngIf="f.submitted && FirstName.invalid && (FirstName.dirty || FirstName.touched)"
+                            class="invalid-feedback">
+                            <div *ngIf="FirstName.errors.required">Firstname is required.</div>
+                        </div>
+                    </div>
+                    <div class="col-3 mb-3">
+                        <input class="form-control" placeholder="Middle Name" id="MiddleName" name="MiddleName"
+                            [(ngModel)]="_user.MiddleName" />
+                    </div>
+                    <div class="col-3 mb-3">
+                        <input
+                            [ngClass]="{ 'is-invalid': f.submitted && LastName.invalid && (LastName.dirty || LastName.touched) }"
+                            class="form-control" placeholder="Last Name" name="LastName" id="LastName"
+                            [(ngModel)]="_user.LastName" #LastName="ngModel" required />
+                        <div *ngIf="f.submitted && LastName.invalid && (LastName.dirty || LastName.touched)"
+                            class="invalid-feedback">
+                            <div *ngIf="LastName.errors.required">Lastname is required.</div>
+                        </div>
+                    </div>
+                    <div class="col-3 mb-3">
+                        <input
+                            [ngClass]="{ 'is-invalid': f.submitted && Mobile.invalid && (Mobile.dirty || Mobile.touched) }"
+                            class="form-control" numbersOnly placeholder="Mobile" name="Mobile" id="Mobile"
+                            maxlength="10" [(ngModel)]="_user.Mobile" #Mobile="ngModel" required
+                            (blur)="validateColumns('mobile',_user.Mobile)" />
+                        <div *ngIf="f.submitted && Mobile.invalid && (Mobile.dirty || Mobile.touched)"
+                            class="invalid-feedback">
+                            <div *ngIf="Mobile.errors.required">Mobile is required.</div>
+                        </div>
+                        <div *ngIf="!_isMobileValid" class="alert alert-danger">
+                            Mobile is already exist! Please try another.
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-12">
+                    <div class="col-3 mb-3">
+                        <div class="input-group">
+                            <input class="form-control" readonly placeholder="Birth Date (dd/mm/yyyy)" name="dp"
+                                [(ngModel)]="_user.BirthDate" ngbDatepicker #d="ngbDatepicker"
+                                [minDate]="{year: 1970, month: 1, day: 1}" />
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                                    <i style="color: #000;font-size: 16px;" class="cui-calendar icons"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3 mb-3">
+                        <input
+                            [ngClass]="{ 'is-invalid': f.submitted && EmailId.invalid && (EmailId.dirty || EmailId.touched) }"
+                            class="form-control" placeholder="Email" name="EmailId" id="EmailId"
+                            [(ngModel)]="_user.EmailId" #EmailId="ngModel" required email
+                            (blur)="validateColumns('email',_user.EmailId)" />
+                        <div *ngIf="f.submitted && EmailId.invalid && (EmailId.dirty || EmailId.touched)"
+                            class="invalid-feedback">
+                            <div *ngIf="EmailId.errors.required">EmailId is required.</div>
+                            <div *ngIf="EmailId.errors.email">EmailId is not valid.</div>
+                        </div>
+                        <div *ngIf="!_isEmailValid" class="alert alert-danger">
+                            <p>EmailId is already exist! Please try another.</p>
+                        </div>
+                    </div>
+                    <div class="col-3 mb-3">
+                        <input class="form-control" maxlength="8" numbersOnly name="PhoneNo" id=""
+                            [(ngModel)]="_user.PhoneNo" placeholder="Phoen No." />
+                    </div>
+                    <div class="col-3 mb-3">
+                        <select
+                            [ngClass]="{ 'is-invalid': f.submitted && UserTypeId.invalid && (UserTypeId.dirty || UserTypeId.touched) }"
+                            class="form-control" #UserTypeId="ngModel" name="UserTypeId" id="UserTypeId"
+                            [(ngModel)]="_user.UserTypeId" required>
+                            <option [ngValue]="null">Select User's Type</option>
+                            <option *ngFor="let u of _userTypes" [value]="u.UserTypeId">{{u.UserTypeDescription}}
+                            </option>
+                        </select>
+                        <div *ngIf="f.submitted && UserTypeId.invalid && (UserTypeId.dirty || UserTypeId.touched)"
+                            class="invalid-feedback">
+                            <div *ngIf="UserTypeId.errors.required">User's type is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-12">
+                    <div class="col-3 mb-3">
+                        <input type="password" class="form-control" name="password" [(ngModel)]="_user.Password"
+                            #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required
+                            minlength="6" placeholder="Password" [disabled]="id!==undefined" />
+                        <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+                            <div *ngIf="password.errors.required">Password is required</div>
+                            <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+                        </div>
+                    </div>
+                    <div class="col-3 mb-3">
+                        <input type="password" class="form-control" name="confirmPassword"
+                            [(ngModel)]="_user.ConfirmPassword" #confirmPassword="ngModel"
+                            [ngClass]="{ 'is-invalid': f.submitted && confirmPassword.invalid }"
+                            placeholder="Confirm Password" required [disabled]="id!==undefined" />
+                        <div *ngIf="f.submitted && confirmPassword.invalid" class="invalid-feedback">
+                            <div *ngIf="confirmPassword.errors.required">Confirm Password is required</div>
+                            <div *ngIf="confirmPassword.errors.mustMatch">Passwords must match</div>
+                        </div>
+                    </div>
+                    <div class="col-3 mb-3">&nbsp;</div>
+                    <div class="col-3 mb-3">&nbsp;</div>
+                </div>
+                <div class="col-12">&nbsp;</div>
+                <div class="col-12">
+                    <h4>Address Information</h4>
+                    <hr />
+                </div>
+                <div class="row col-12">
+                    <div class="col-3  mb-3">
+                        <input class="form-control" placeholder="Address 1" name="Address1" id="Address1"
+                            [(ngModel)]="_user.Address1" />
+                    </div>
+                    <div class="col-3 mb-3">
+                        <input class="form-control" placeholder="Address 2" id="Address2" name="Address2"
+                            [(ngModel)]="_user.Address2" />
+                    </div>
+                    <div class="col-3 mb-3">
+                        <input type="text" class="form-control" name="ZipCode" id="ZipCode" [(ngModel)]="_user.ZipCode"
+                            maxlength="6" placeholder="Zipcode" />
+
+                    </div>
+                </div>
+                <div class="col-12">&nbsp;</div>
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary mt-2 btnSet"
+                        [disabled]="!f.valid">{{_title}}</button>&nbsp;
+                    <button type="button" class="btn btn-primary mt-2 btnSet" (click)="BackToList()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+<div class="animated fadeIn">
+    <div class="full-page-header">
+        <div class="back-arrow" (click)="BackToList()">
+            <i class="fa fa-chevron-left"></i>&nbsp;<span>Clients</span>
+        </div>
+        <label class="user-name">{{_userObject.full_name}}</label>
+    </div>
+    <div class="adjust-view">
+        <div class="row">
+            <div class="col-md-3">
+                &nbsp;
+            </div>
+            <div class="col-md-3">
+                &nbsp;
+            </div>
+            <div class="col-md-3">
+                &nbsp;
+            </div>
+            <div class="col-md-3 d-flex justify-content-end align-items-center">
+                <button class="btn btn-primary" (click)="AddGoal(addGoals)"
+                    style="height: 50px;width: 100%; border-radius: 100px;">Create Goal</button>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <kendo-grid [kendoGridBinding]="gridData" [reorderable]="true" style="height: calc(100vh - 40vh);">
+                    <kendo-grid-column field="DateCreated" title="Date Created" [width]="80">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.DateCreated | date: 'MMMM dd, yyyy'}}
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="Goal" title="Goal" [width]="80">
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="Progress" title="Progress" [width]="80">
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="Active" title="Active" [width]="80">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <span *ngIf="dataItem.Active===true"><i class="fa fa-circle"
+                                    style="color: green;"></i></span>
+                            <span *ngIf="dataItem.Active===false">
+                                <i class="fa fa-circle" style="color: red;"></i>
+                            </span>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="DeadLine" title="DeadLine" [width]="80">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.DeadLine | date: 'MMMM dd, yyyy'}}
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <kendo-grid-checkbox-column [width]="45" [headerClass]="{'text-center': true}"
+                        [class]="{'text-center': true}" [resizable]="false" [columnMenu]="false" showSelectAll="true">
+                    </kendo-grid-checkbox-column>
+                </kendo-grid>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #addGoals let-modal>
+    <div class="modal-header text-center">
+        <h4 class="modal-title" id="modal-basic-title">Create Goal</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <div class="input-group">
+                    <input id="dateCreated" class="form-control" placeholder="mm/dd/yyyy" name="dateCreated" ngbDatepicker
+                        #dateCreated="ngbDatepicker" readonly />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="dateCreated.toggle()" type="button">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input id="goal" type="text" class="form-control" placeholder="Goal" name="goal" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input id="progress" type="text" class="form-control" placeholder="Progress %" name="progress" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input id="progress" type="checkbox" />&nbsp; Active
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input id="deadline" class="form-control" placeholder="mm/dd/yyyy" name="deadline" ngbDatepicker
+                        #deadline="ngbDatepicker" readonly />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="deadline.toggle()" type="button">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" (click)="modal.close('Save click')"
+                    style="height: 50px;width: 100%; border-radius: 100px;">Goal</button>
+            </div>
+        </form>
+    </div>
+</ng-template>

@@ -1,0 +1,146 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.2)" size="medium" color="#2699fb" type="timer" [fullScreen]="true">
+    <p style="color: #2699fb"> Please wait... </p>
+</ngx-spinner>
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <div style="float: left;">
+                <strong>Manage Users</strong>
+            </div>
+            <button style="float: right;background: rgb(38, 153, 251);; width: 100px;" class="btn btn-block btn-primary"
+                type="button" (click)="AddNewUser()">
+                <i class="fa fa-plus-circle fa-lg"></i>&nbsp;Add
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="col-12 table-responsive">
+                <kendo-grid [kendoGridBinding]="gridView" kendoGridSelectBy="id" [selectedKeys]="mySelection"
+                    [pageSize]="10" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true"
+                    [resizable]="true" [columnMenu]="{ filter: true }" style="height: calc(100vh - 25vh);"
+                    (cellClick)="onCellClick($event)">
+                    <ng-template kendoGridToolbarTemplate>
+                        <input placeholder="Search in all columns..." kendoTextBox
+                            (input)="onFilter($event.target.value)" />
+                        <button kendoGridExcelCommand type="button" icon="file-excel" style="float:right;">Export to
+                            Excel</button>
+                        <button kendoGridPDFCommand icon="file-pdf" style="float:right;">Export to PDF</button>
+                    </ng-template>
+                    <kendo-grid-column-group title="User Details" [columnMenu]="false">
+                        <kendo-grid-column field="avatar_uri" title="Logo" [width]="60">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="customer-photo">
+                                    <img *ngIf="dataItem.avatar_uri === '' || dataItem.avatar_uri === 'null' || dataItem.avatar_uri === null"
+                                        src='../../../assets/img/avatars/8.png' alt="Avatar"
+                                        style="width: 50px; border-radius: 50%;" />
+                                    <div
+                                        *ngIf="dataItem.avatar_uri !== 'null' && dataItem.avatar_uri !== '' && dataItem.avatar_uri !== null">
+                                        <img src={{dataItem.avatar_uri}} alt="Avatar"
+                                            style="width: 50px; border-radius: 50%;" />
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="first_name" title="First Name" [width]="70" title="First Name">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="customer-photo">
+                                    {{ dataItem.first_name }}
+                                </div>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="last_name" title="Last Name" [width]="70" title="Last Name">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="customer-photo">
+                                    {{ dataItem.last_name }}
+                                </div>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="dob" title="Date of birth" [width]="70" title="Date of Birth">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="customer-photo">
+                                    {{ dataItem.dob }}
+                                </div>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="sex" title="Sex" [width]="40" title="Sex">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="customer-photo">
+                                    {{ dataItem.sex }}
+                                </div>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="salutation" title="Salutation" [width]="40" title="Salutation">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="customer-photo">
+                                    {{ dataItem.salutation }}
+                                </div>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="facility_code" title="Facility Code" [width]="60"
+                            title="Facility Code">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.facility_code}}
+                            </ng-template>
+                        </kendo-grid-column>
+                    </kendo-grid-column-group>
+                    <kendo-grid-column-group title="Contact Details" [columnMenu]="false">
+                        <kendo-grid-column field="phone" title="Contact No." [width]="70" title="Contact No.">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="customer-photo">
+                                    {{ dataItem.phone }}
+                                </div>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="email" title="Email" [width]="120" title="Email">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="customer-photo">
+                                    {{ dataItem.email }}
+                                </div>
+                            </ng-template>
+                        </kendo-grid-column>
+                    </kendo-grid-column-group>
+                    <kendo-grid-column-group title="Address Details" [columnMenu]="false">
+                        <kendo-grid-column field="address1" title="Address 1" [width]="80" title="Address 1">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.address1}}
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="address2" title="Address 2" [width]="80" title="Address 2">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.address1}}
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="city" title="City" [width]="60" title="City">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.city}}
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="state" title="State" [width]="70" title="State">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.state}}
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="zipcode" title="Zipcode" [width]="60" title="Zipcode">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.zipcode}}
+                            </ng-template>
+                        </kendo-grid-column>
+                    </kendo-grid-column-group>
+                    <kendo-grid-column field="last_login_date" title="Last Login Date" [width]="65"
+                        title="Last Login Date">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.last_login_date | date: 'MM/dd/yyyy hh:mm'}}
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column [width]="50">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <span (click)="EditUsers(dataItem.id)" class="k-icon k-i-edit"
+                                style="cursor: pointer !important;"></span>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-pdf fileName="BusinessOwners.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+                    <kendo-grid-excel fileName="BusinessOwners.xlsx"></kendo-grid-excel>
+                </kendo-grid>
+            </div>
+        </div>
+    </div>
+</div>

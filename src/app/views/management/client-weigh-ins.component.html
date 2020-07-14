@@ -1,0 +1,98 @@
+<div class="animated fadeIn">
+    <div class="full-page-header">
+        <div class="back-arrow" (click)="BackToList()">
+            <i class="fa fa-chevron-left"></i>&nbsp;<span>Clients</span>
+        </div>
+        <label class="user-name">{{_userObject.full_name}}</label>
+    </div>
+    <div class="adjust-view">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card text-white bg-info">
+                    <div class="card-body text-center">
+                        <div class="weigh-ins-statistics">Totla Weight Loss</div>
+                        <div class="text-value weigh-ins-count">-100lbs</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info">
+                    <div class="card-body text-center">
+                        <div class="weigh-ins-statistics">Starting Weight</div>
+                        <div class="text-value weigh-ins-count">300lbs</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info">
+                    <div class="card-body text-center">
+                        <div class="weigh-ins-statistics">Current Weight</div>
+                        <div class="text-value weigh-ins-count">200lbs</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex justify-content-end align-items-center">
+                <button class="btn btn-primary" (click)="AddWeighIn(addWeighInModal)"
+                    style="height: 50px;width: 100%; border-radius: 100px;">Weigh
+                    In</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <kendo-grid [kendoGridBinding]="gridData" [reorderable]="true" style="height: calc(100vh - 40vh);">
+                    <kendo-grid-column field="Date" title="Date" [width]="80">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.Date | date: 'MMMM dd, yyyy'}}
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="Weight" title="Weight(lbs)" [width]="80">
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="BodyFat" title="Body Fat(%)" [width]="80">
+                    </kendo-grid-column>
+                    <kendo-grid-checkbox-column [width]="45" [headerClass]="{'text-center': true}"
+                        [class]="{'text-center': true}" [resizable]="false" [columnMenu]="false" showSelectAll="true">
+                    </kendo-grid-checkbox-column>
+                </kendo-grid>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #addWeighInModal let-modal>
+    <div class="modal-header text-center">
+        <h4 class="modal-title" id="modal-basic-title">Add Weigh In</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <div class="input-group">
+                    <input id="date" class="form-control" placeholder="mm/dd/yyyy" name="date" ngbDatepicker
+                        #date="ngbDatepicker" readonly />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="date.toggle()" type="button">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input id="weight" type="text" class="form-control" placeholder="Weight" name="weight" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input id="bodyFat" type="text" class="form-control" placeholder="Body Fat %" name="bodyFat" />
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" (click)="modal.close('Save click')"
+                    style="height: 50px;width: 100%; border-radius: 100px;">Weigh In</button>
+            </div>
+        </form>
+    </div>
+</ng-template>

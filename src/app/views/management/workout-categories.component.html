@@ -1,0 +1,70 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <div style="float: left;">
+                <strong>Workout Categories</strong>
+            </div>
+            <div style="float: right;display: flex;">
+                <button style="background: rgb(38, 153, 251);" class="btn btn-block btn-primary" type="button"
+                    (click)="AddWorkoutCategory(WorkoutCategory)">
+                    <i class="fa fa-plus fa-lg"></i>&nbsp;Add Workout Category
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="col-12 table-responsive">
+                <div class="row">
+                    <div class="col-md-4 text-center" *ngFor='let n of workout; let i=index' style="margin-bottom: 2%;">
+                        <div style="border: 1px solid; padding: 0px; border-radius: 15px;">
+                            <div class="box-layout" (click)="showWorkout(n)" style="cursor: pointer; ">
+                                {{n.name}}
+                            </div>
+                            <div style="padding: 15px;">
+                                <i class="fa fa-trash" (click)="deleteConfirmation(DeleteCateforyConfirmation,n)"
+                                    style="color: red;font-size: 30px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #WorkoutCategory let-modal>
+    <div class="modal-header text-center">
+        <h4 class="modal-title" id="modal-basic-title">Add Workout Category</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="Name" name="Name" class="form-control" placeholder="Name" />
+            </div>
+            <div class="form-group">
+                <label>Keep Active?</label>
+                <input type="checkbox" id="is_active" name="is_active" />
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" (click)="modal.close('Save click')"
+                    style="height: 50px;width: 100%; border-radius: 100px;">Add Workout Category</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+<ng-template #DeleteCateforyConfirmation let-modal>
+    <div class="modal-header text-center">
+        <h4 class="modal-title" id="modal-basic-title">Delete Confirmation</h4>
+    </div>
+    <div class="modal-body">
+        Are you sure want to delete this workout Category?
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="modal.close('Save click')"
+            style="height: 50px;width: 100%; border-radius: 100px;">No</button>
+        <button type="button" class="btn btn-primary" (click)="modal.close('Save click')"
+            style="height: 50px;width: 100%; border-radius: 100px;">Yes</button>
+    </div>
+</ng-template>

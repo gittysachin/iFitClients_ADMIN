@@ -1,0 +1,39 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <div style="float: left;">
+                <strong>Workouts</strong>
+            </div>
+            <div style="float: right;display: flex;">
+                <button style="background: rgb(38, 153, 251);;width: 100px;" class="btn btn-block btn-primary"
+                    type="button" (click)="BackToList()">
+                    <i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;Back
+                </button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button style="float: right;background: rgb(38, 153, 251);; width: 100px;margin-top: -1px;"
+                    class="btn btn-block btn-primary" type="button" (click)="AddNewVideo()">
+                    <i class="fa fa-plus-circle fa-lg"></i>&nbsp;Add
+                </button>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 text-center" *ngFor='let video of workoutVideoChannel; let i=index'>
+                    <p>&nbsp;</p>
+                    <img [src]="video.thumbnails.url" height="{{video.thumbnails.height-30}}"
+                        width="{{video.thumbnails.width - 50}}" (click)="open(i, VideoModal)"
+                        style="border:2px solid #000;margin-bottom: 1%;" />
+                    <p>{{video.title}}</p>
+                    <p><strong>{{video.contentDetails.videoPublishedAt | date:'MMMM dd, yyyy'}}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #VideoModal let-modal>
+    <div class="modal-body">
+        <iframe width="100%" height="600px" [src]="videoURL" frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+</ng-template>

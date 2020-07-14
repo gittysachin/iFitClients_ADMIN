@@ -1,0 +1,67 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.2)" size="medium" color="#2699fb" type="timer" [fullScreen]="true">
+  <p style="color: #2699fb"> Please wait... </p>
+</ngx-spinner>
+<div class="app-body">
+  <main class="main d-flex align-items-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card-group">
+            <div class="col-md-12" style="display: flex; align-items: center; justify-content: center;">
+              <div class="row">
+                <div class="col-md-4">
+                  <img src="../../../assets/img/brand/logo-panel.png" alt="logo" width="280" />
+                </div>
+
+                <!-- <div class="col-md-8" style="display: flex; align-items: center;">
+                  <h1>Login</h1>
+                </div> -->
+              </div>
+            </div>
+            <div class="card p-4 mt-3">
+              <div class="card-body">
+                <form name="login" (ngSubmit)="f.form.valid && validateUser()" #f="ngForm" novalidate>
+                  <!-- <h1>Login</h1>
+                  <p class="text-muted">Sign In to your account</p> -->
+                  <p *ngIf="Message && Message.length > 0" class="text-muted alert alert-danger">{{Message}}</p>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-user"></i></span>
+                    </div>
+                    <input name="username" [(ngModel)]="_user.Username" #email="ngModel"
+                      [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" type="text" class="form-control"
+                      placeholder="Username" required email />
+                    <div *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+                      <div *ngIf="email.errors.required">Username is required.</div>
+                      <div *ngIf="email.errors.email">Username is not valid.</div>
+                    </div>
+                  </div>
+                  <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-lock"></i></span>
+                    </div>
+                    <input name="password" placeholder="Password" [(ngModel)]="_user.Password" type="password"
+                      #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
+                      class="form-control" required />
+                    <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+                      <div *ngIf="password.errors.required">Password is required.</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <button type="submit" class="btn btn-primary mt-2 btnSet" [disabled]="!f.valid">Sign In</button>
+                    </div>
+                    <div class="col-6 text-right"
+                      style="display: flex; align-items: flex-end; justify-content: flex-end;">
+                      <a href="javascript:void(0);">Forgot password?</a>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
