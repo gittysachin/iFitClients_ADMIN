@@ -1,78 +1,75 @@
 <div class="animated fadeIn">
-    <div class="card">
-        <div class="card-header">
-            <div style="float: left;">
-                <strong>Add Videos</strong>
-            </div>
-            <button style="float: right;background: rgb(38, 153, 251);; width: 100px;" class="btn btn-block btn-primary"
-                type="button" (click)="goBack()">
-                <i class="fa fa-arrow-left fa-lg"></i>&nbsp;Back
-            </button>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="uploadfilecontainer custom-upload-height" (click)="fileInput.click()" appDragDrop
-                        (onFileDropped)="uploadFile($event)">
-                        <div class="upload-container-inner-message">
-                            <h1>Drag and drop file or upload from youtube</h1>
-                            <br />
-                            <h5 style="color: gray;">Select a mp4 or mov file, up to 5 minutes long</h5>
-                        </div>
-                        <input hidden type="file" #fileInput multiple (change)="uploadFile($event.target.files)">
-                        <div class="upload-container-inner-bottom-message">
-                            <h4 style="color: gray;">Videos uploaded here are ad-free, share-disabled and designed to
-                                work best with the
-                                mobile app. Also, try uploading videos directly from the IOS app.</h4>
-                        </div>
-                    </div>
-                    <div class="files-list" *ngFor="let file of files;let i= index">
-                        <p> {{ file }} </p>
-                        <button class="delete-file" (click)="deleteAttachment(i)">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label><strong>Title</strong></label>
-                                <textarea class="form-control" rows="3" placeholder="Title of the exercise"></textarea>
-                            </div>
-                            <hr />
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label><strong>Type</strong></label>
-                                <select class="form-control">
-                                    <option selected>Select Type</option>
-                                    <option>Strength (Reps x Weight, e.g. ...)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label><strong>Add Tags:</strong></label>&nbsp;
-                                <a href="javascript:void(0)">Add tags +</a>
-                            </div>
-                            <hr />
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label><strong>Instructions</strong></label>
-                                <textarea class="form-control" placeholder="Exercise Instructions" rows="10"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <button style="float: right;background: rgb(38, 153, 251);; width: 100%;"
-                                class="btn btn-block btn-primary" type="button" (click)="goBack()">
-                                Save to Exercise Library
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="card">
+    <div class="card-header">
+      <div style="float: left;">
+        <strong>Add Videos</strong>
+      </div>
+      <button style="float: right;background: rgb(38, 153, 251);; width: 100px;" class="btn btn-block btn-primary" type="button" (click)="goBack()">
+        <i class="fa fa-arrow-left fa-lg"></i>&nbsp;Back
+      </button>
     </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="uploadfilecontainer custom-upload-height" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+            <div class="upload-container-inner-message">
+              <h1>Drag and drop file or upload from youtube</h1>
+              <br />
+              <h5 style="color: gray;">Select a mp4 or mov file, up to 5 minutes long</h5>
+            </div>
+            <input hidden type="file" #fileInput multiple (change)="uploadFile($event.target.files)">
+            <div class="upload-container-inner-bottom-message">
+              <h4 style="color: gray;">Videos uploaded here are ad-free, share-disabled and designed to
+                work best with the
+                mobile app. Also, try uploading videos directly from the IOS app.</h4>
+            </div>
+          </div>
+          <div class="files-list" *ngFor="let file of files;let i= index">
+            <p> {{ file.name }} </p>
+            <button class="delete-file" (click)="deleteAttachment(i)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Title</strong></label>
+                <textarea class="form-control" rows="3" placeholder="Title of the exercise"></textarea>
+              </div>
+              <hr />
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Type</strong></label>
+                <select class="form-control">
+                  <option selected>Select Type</option>
+                  <option>Strength (Reps x Weight, e.g. ...)</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Add Tags:</strong></label>&nbsp;
+                <a href="javascript:void(0)">Add tags +</a>
+              </div>
+              <hr />
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Instructions</strong></label>
+                <textarea class="form-control" placeholder="Exercise Instructions" rows="10"></textarea>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <button style="float: right;background: rgb(38, 153, 251);; width: 100%;" class="btn btn-block btn-primary" type="button" (click)="goBack()">
+                Save to Exercise Library
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

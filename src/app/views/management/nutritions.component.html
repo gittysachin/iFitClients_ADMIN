@@ -1,66 +1,68 @@
 <div class="animated fadeIn">
-    <div class="card">
-        <div class="card-header">
-            <div style="float: left;">
-                <strong>Nutritions</strong>
-            </div>
-            <div style="float: right;display: flex;">
-                <button style="background: rgb(38, 153, 251);;width: 100px;"
-                    class="btn btn-block btn-primary" type="button" (click)="BackToList()">
-                    <i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;Back
-                </button>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button style="background: rgb(38, 153, 251);; width: 100px;margin-top: -1px;" class="btn btn-block btn-primary"
-                    type="button" (click)="AddNew(addNutritions)">
-                    <i class="fa fa-plus-circle fa-lg"></i>&nbsp;Add
-                </button>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-3 text-center" *ngFor='let image of _albums; let i=index'>
-                    <p>&nbsp;</p>
-                    <img [src]="image.thumb" style="width: 100%;" height="250px" (click)="open(i)" />
-                    <p>&nbsp;</p>
-                    <p><strong>{{image.date}}</strong></p>
-                </div>
-            </div>
-        </div>
+  <div class="card">
+    <div class="card-header">
+      <div style="float: left;">
+        <strong>Nutritions</strong>
+      </div>
+      <div style="float: right;display: flex;">
+        <button style="background: rgb(38, 153, 251);;width: 100px;" class="btn btn-block btn-primary" type="button" (click)="BackToList()">
+          <i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;Back
+        </button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button style="background: rgb(38, 153, 251);; width: 100px;margin-top: -1px;" class="btn btn-block btn-primary" type="button" (click)="AddNew(addNutritions)">
+          <i class="fa fa-plus-circle fa-lg"></i>&nbsp;Add
+        </button>
+      </div>
     </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3 text-center" *ngFor='let image of nutritionsData; let i=index'>
+          <p>&nbsp;</p>
+          <img [src]="image.url" style="width: 100%;" height="250px" (click)="open(i)" />
+          <p>&nbsp;</p>
+          <p><strong>{{image.name}}</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <ng-template #addNutritions let-modal>
-    <div class="modal-header text-center">
-        <h4 class="modal-title" id="modal-basic-title">Add Nutritions</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <form>
-            <div class="form-group">
-                <label>Title</label>
-                <input type="text" id="title" name="title" class="form-control" placeholder="Title" />
-            </div>
-            <div class="form-group">
-                <label>Description</label>
-                <textarea class="form-control" placeholder="Description" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop
-                    (onFileDropped)="uploadFile($event)">
-                    <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
-                </div>
-                <div class="files-list" *ngFor="let file of files;let i= index">
-                    <p> {{ file }} </p>
-                    <button class="delete-file" (click)="deleteAttachment(i)">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="form-group">
-                <button type="button" class="btn btn-primary" (click)="modal.close('Save click')"
-                    style="height: 50px;width: 100%; border-radius: 100px;">Add Nutritions</button>
-            </div>
-        </form>
-    </div>
+  <div class="modal-header text-center">
+    <h4 class="modal-title" id="modal-basic-title">Add Nutritions</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #nutritionsForm="ngForm" novalidate>
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" id="name" [ngClass]="{ 'is-invalid': name.invalid && (name.dirty || name.touched)}" [(ngModel)]="nutritions.name" #name="ngModel" name="name" required class="form-control" placeholder="Name" />
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
+          <div *ngIf="name.errors.required">Name is required.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea class="form-control" placeholder="Description" rows="3" [ngClass]="{ 'is-invalid': description.invalid && (description.dirty || description.touched)}" [(ngModel)]="nutritions.description" #description="ngModel" name="description" required></textarea>
+        <div *ngIf="description.invalid && (description.dirty || description.touched)" class="invalid-feedback">
+          <div *ngIf="description.errors.required">Description is required.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+          <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+        </div>
+        <div class="files-list" *ngFor="let file of files;let i= index">
+          <p> {{ file.name }} </p>
+          <button class="delete-file" (click)="deleteAttachment(i)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-primary" (click)="SaveNutritions(nutritionsForm,addNutritions);" style="height: 50px;width: 100%; border-radius: 100px;">Add Nutritions</button>
+      </div>
+    </form>
+  </div>
 </ng-template>

@@ -8,16 +8,28 @@ import { Router } from '@angular/router';
 export class AddVideosComponent implements OnInit {
 
   files: any = [];
-  constructor(private _router: Router) { }
-
-  ngOnInit() {
+  workout: any = {
+    business_owner_id: '',
+    category_id: '',
+    url: '',
+    name: '',
+    description: ''
   }
+  constructor(private _router: Router) {}
+
+  ngOnInit() {}
 
   uploadFile(event: any) {
     for (let index = 0; index < event.length; index++) {
-      const element = event[index];
-      this.files.push(element.name)
+      if (event[index].type == 'video/mp4' || event[index].type == 'video/mov') {
+        const element = event[index];
+        this.files.push(element)
+      }
     }
+  }
+
+  deleteAttachment(index: number) {
+    this.files.splice(index, 1)
   }
 
   goBack() {
