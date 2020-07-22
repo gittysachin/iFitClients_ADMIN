@@ -64,7 +64,8 @@ export class AddEditSuperUsersComponent implements OnInit {
         this.iFitUser.confirmcredentials = ud.res.credentials;
         if (this.iFitUser.dob) {
           this.iFitUser.dob = {
-            isRange: false, singleDate: {
+            isRange: false,
+            singleDate: {
               date: {
                 year: ud.res.dob.substring(10, 6),
                 month: parseInt(ud.res.dob.substring(0, 2)),

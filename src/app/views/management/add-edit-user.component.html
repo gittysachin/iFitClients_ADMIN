@@ -1,94 +1,77 @@
 <ngx-spinner bdColor="rgba(0, 0, 0, 0.2)" size="medium" color="#2699fb" type="timer" [fullScreen]="true">
-    <p style="color: #2699fb"> Please wait... </p>
+  <p style="color: #2699fb"> Please wait... </p>
 </ngx-spinner>
 <div class="animated fadeIn">
-    <div class="card">
-        <div class="card-header">
-            <strong>{{_title}} Business Owner</strong>
-            <button style="float: right;background: rgb(38, 153, 251);;width: 100px;" class="btn btn-block btn-primary"
-                type="button" (click)="BackToList()">
-                <i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;Back
-            </button>
-        </div>
-        <div class="card-body">
-            <form name="UsesAddEdit" (ngSubmit)="f.form.valid && SaveOwners()" #f="ngForm"
-                enctype="multipart/form-data">
-                <div class="col-12">
-                    <h4>General Information</h4>
-                </div>
-                <div class="row col-12">
-                    <div class="col-3  mb-3">
-                        <label>Business Name</label>
-                        <input
-                            [ngClass]="{ 'is-invalid': f.submitted && business_name.invalid && (business_name.dirty || business_name.touched)}"
-                            class="form-control" placeholder="Business Name" name="business_name" id="business_name"
-                            [(ngModel)]="_businessOwners.business_name" #business_name="ngModel" required />
-                        <div *ngIf="f.submitted && business_name.invalid && (business_name.dirty || business_name.touched)"
-                            class="invalid-feedback">
-                            <div *ngIf="business_name.errors.required">Business Name is required.</div>
-                        </div>
-                    </div>
-                    <div class="col-3 mb-3">
-                        <label>Facility code</label>
-                        <input
-                            [ngClass]="{ 'is-invalid': f.submitted && facility_code.invalid && (facility_code.dirty || facility_code.touched)}"
-                            class="form-control" placeholder="Business Name" name="facility_code" id="facility_code"
-                            [(ngModel)]="_businessOwners.facility_code" #facility_code="ngModel" required />
-                        <div *ngIf="f.submitted && facility_code.invalid && (facility_code.dirty || facility_code.touched)"
-                            class="invalid-feedback">
-                            <div *ngIf="facility_code.errors.required">Facility code is required.</div>
-                        </div>
-                    </div>
-                    <div class="col-3 mb-3">
-                        <label>Business Logo</label><br />
-                        <input type="file" #fileInput (change)="uploadFile($event.target.files)">
-                    </div>
-                    <div class="col-3 mb-3">
-                        <div style="display: flex; align-items: flex-end; justify-content: flex-end;">
-                            <img id="userImage" style="width: 100px; border-radius: 50%;"
-                                src="{{_businessOwners.business_logo_url}}" alt="Business Logo" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <h4>Address Information</h4>
-                </div>
-                <div class="row col-12">
-                    <div class="col-3  mb-3">
-                        <label>Address 1</label>
-                        <input class="form-control" placeholder="Address 1" name="Address1" id="Address1"
-                            [(ngModel)]="_businessOwners.address1" />
-                    </div>
-                    <div class="col-3 mb-3">
-                        <label>Address 2</label>
-                        <input class="form-control" placeholder="Address 2" id="address2" name="address2"
-                            [(ngModel)]="_businessOwners.address2" />
-                    </div>
-                    <div class="col-3 mb-3">
-                        <label>City</label>
-                        <input type="text" class="form-control" name="city" id="city" [(ngModel)]="_businessOwners.city"
-                            maxlength="6" placeholder="City" />
-                    </div>
-                    <div class="col-3 mb-3">
-                        <label>State</label>
-                        <input type="text" class="form-control" name="state" id="state"
-                            [(ngModel)]="_businessOwners.state" maxlength="6" placeholder="State" />
-                    </div>
-                </div>
-                <div class="row col-12">
-                    <div class="col-3 mb-3">
-                        <label>Zipcode</label>
-                        <input type="text" class="form-control" name="ZipCode" id="ZipCode"
-                            [(ngModel)]="_businessOwners.zipcode" maxlength="6" placeholder="Zipcode" />
-                    </div>
-                </div>
-                <div class="col-12">&nbsp;</div>
-                <div class="col-12 text-center">
-                    <button type="submit" class="btn btn-primary mt-2 btnSet"
-                        [disabled]="!f.valid">{{_title}}</button>&nbsp;
-                    <button type="button" class="btn btn-primary mt-2 btnSet" (click)="BackToList()">Cancel</button>
-                </div>
-            </form>
-        </div>
+  <div class="card">
+    <div class="card-header">
+      <strong>{{_title}} Business Owner</strong>
+      <button style="float: right;background: rgb(38, 153, 251);;width: 100px;" class="btn btn-block btn-primary" type="button" (click)="BackToList()">
+        <i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;Back
+      </button>
     </div>
+    <div class="card-body">
+      <form name="UsesAddEdit" (ngSubmit)="f.form.valid && SaveOwners()" #f="ngForm" enctype="multipart/form-data">
+        <div class="col-12">
+          <h4>General Information</h4>
+        </div>
+        <div class="row col-12">
+          <div class="col-3  mb-3">
+            <label>Business Name</label>
+            <input [ngClass]="{ 'is-invalid': f.submitted && business_name.invalid && (business_name.dirty || business_name.touched)}" class="form-control" placeholder="Business Name" name="business_name" id="business_name" [(ngModel)]="_businessOwners.business_name" #business_name="ngModel" required />
+            <div *ngIf="f.submitted && business_name.invalid && (business_name.dirty || business_name.touched)" class="invalid-feedback">
+              <div *ngIf="business_name.errors.required">Business Name is required.</div>
+            </div>
+          </div>
+          <div class="col-3 mb-3">
+            <label>Facility code</label>
+            <input [ngClass]="{ 'is-invalid': f.submitted && facility_code.invalid && (facility_code.dirty || facility_code.touched)}" class="form-control" placeholder="Business Name" name="facility_code" id="facility_code" [(ngModel)]="_businessOwners.facility_code" #facility_code="ngModel" required />
+            <div *ngIf="f.submitted && facility_code.invalid && (facility_code.dirty || facility_code.touched)" class="invalid-feedback">
+              <div *ngIf="facility_code.errors.required">Facility code is required.</div>
+            </div>
+          </div>
+          <div class="col-3 mb-3">
+            <label>Business Logo</label><br />
+            <input type="file" #fileInput (change)="uploadFile($event.target.files)">
+          </div>
+          <div class="col-3 mb-3">
+            <div style="display: flex; align-items: flex-end; justify-content: flex-end;">
+              <img id="userImage" style="width: 100px; border-radius: 50%;" src="{{_businessOwners.business_logo_url}}" alt="Business Logo" />
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <h4>Address Information</h4>
+        </div>
+        <div class="row col-12">
+          <div class="col-3  mb-3">
+            <label>Address 1</label>
+            <input class="form-control" placeholder="Address 1" name="Address1" id="Address1" [(ngModel)]="_businessOwners.address1" />
+          </div>
+          <div class="col-3 mb-3">
+            <label>Address 2</label>
+            <input class="form-control" placeholder="Address 2" id="address2" name="address2" [(ngModel)]="_businessOwners.address2" />
+          </div>
+          <div class="col-3 mb-3">
+            <label>City</label>
+            <input type="text" class="form-control" name="city" id="city" [(ngModel)]="_businessOwners.city" maxlength="6" placeholder="City" />
+          </div>
+          <div class="col-3 mb-3">
+            <label>State</label>
+            <input type="text" class="form-control" name="state" id="state" [(ngModel)]="_businessOwners.state" maxlength="6" placeholder="State" />
+          </div>
+        </div>
+        <div class="row col-12">
+          <div class="col-3 mb-3">
+            <label>Zipcode</label>
+            <input type="text" class="form-control" name="ZipCode" id="ZipCode" [(ngModel)]="_businessOwners.zipcode" maxlength="6" placeholder="Zipcode" />
+          </div>
+        </div>
+        <div class="col-12">&nbsp;</div>
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-primary mt-2 btnSet" [disabled]="!f.valid">{{_title}}</button>&nbsp;
+          <button type="button" class="btn btn-primary mt-2 btnSet" (click)="BackToList()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

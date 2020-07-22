@@ -40,8 +40,7 @@ export class ActivitiesComponent implements OnInit {
     this._user = new UserMaster();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   AddAnUpdate(modal: any) {
     this.modalService.open(modal, {

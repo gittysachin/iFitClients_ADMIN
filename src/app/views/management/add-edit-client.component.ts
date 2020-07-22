@@ -24,7 +24,7 @@ export class AddEditClientComponent implements OnInit {
   _isMobileValid: boolean;
   _isEmailValid: boolean;
   _userObject: any
-  constructor(private _router: Router) {    
+  constructor(private _router: Router) {
     const selectedClient = localStorage.getItem('selectedclient');
     const parsedClientJson = JSON.parse(selectedClient);
     if (parsedClientJson) {
@@ -58,11 +58,10 @@ export class AddEditClientComponent implements OnInit {
       title: {
         text: "Progress"
       },
-      data: [
-        {
-          type: "line",
-          dataPoints: dataPoints
-        }]
+      data: [{
+        type: "line",
+        dataPoints: dataPoints
+      }]
     })
     chart.render();
   }

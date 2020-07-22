@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Lightbox } from 'ngx-lightbox';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NutritionService } from '../../services/nutritions/nutritions.service';
+import { NutritionList } from '../../../assets/resources/nutritions-list';
+import { NgForm } from "@angular/forms";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-add-videos',
@@ -8,13 +14,7 @@ import { Router } from '@angular/router';
 export class AddVideosComponent implements OnInit {
 
   files: any = [];
-  workout: any = {
-    business_owner_id: '',
-    category_id: '',
-    url: '',
-    name: '',
-    description: ''
-  }
+
   constructor(private _router: Router) {}
 
   ngOnInit() {}
