@@ -29,7 +29,9 @@ export class ClientsComponent implements OnInit {
   totalItems: any;
   page: any = 1;
   previousPage: any;
-  
+  _dates: any = new Date();
+  _pdfFileName = `Clients_${Date.parse(this._dates)}.pdf`;
+  _excelFileName = `Clients_${Date.parse(this._dates)}.xlsx`;
   public gridData: any[] = employees;
   public gridView: any[];
 

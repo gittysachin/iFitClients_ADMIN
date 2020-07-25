@@ -38,9 +38,14 @@ export class LoginComponent implements OnInit {
     if (this._user) {
       this._auth.authUsers(this._authController, this._authMethod, this._user).subscribe((_users: any) => {
         if (_users && _users.token) {
-          sessionStorage.setItem('token', _users.token);
-          sessionStorage.setItem('user', JSON.stringify(_users.user));
-          this.router.navigate(['/dashboard']);
+          debugger;
+          if(_users && _users.user && _users.user.usersType && _users.user.usersType.type.toLowerCase() === 'client') {
+            this.Message = 'Invalid user. This type of user can not access administration panel! For more details, contact your administrator.';  
+          } else {
+            sessionStorage.setItem('token', _users.token);
+            sessionStorage.setItem('user', JSON.stringify(_users.user));
+            this.router.navigate(['/dashboard']);
+          }
         } else {
           this.Message = _users.message
         }
