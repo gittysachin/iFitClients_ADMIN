@@ -33,10 +33,16 @@ export class ClientsComponent implements OnInit {
   totalItems: any;
   page: any = 1;
   previousPage: any;
+<<<<<<< HEAD
   _types: any;
   _decryptedUser: any;
   _secureAuth: SecureAuth;
 
+=======
+  _dates: any = new Date();
+  _pdfFileName = `Clients_${Date.parse(this._dates)}.pdf`;
+  _excelFileName = `Clients_${Date.parse(this._dates)}.xlsx`;
+>>>>>>> 9d4709ced18db60809889c967686130eec8d51f8
   public gridData: any[] = employees;
   public gridView: any[];
 

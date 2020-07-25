@@ -65,8 +65,8 @@
                                 style="cursor: pointer !important;"></span>
                         </ng-template>
                     </kendo-grid-column>
-                    <kendo-grid-pdf fileName="Trainers.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
-                    <kendo-grid-excel fileName="Trainers.xlsx"></kendo-grid-excel>
+                    <kendo-grid-pdf fileName="{{_pdfFileName}}" [repeatHeaders]="true"></kendo-grid-pdf>
+                    <kendo-grid-excel fileName="{{_excelFileName}}"></kendo-grid-excel>
                 </kendo-grid>
             </div>
         </div>
