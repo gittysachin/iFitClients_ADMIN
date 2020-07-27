@@ -6,6 +6,7 @@ import { UserSearchParams } from '../../models/users/user-search-params';
 import * as data from '../../../assets/resources/users.json';
 import { HttpClient } from '@angular/common/http';
 import { DataBindingDirective } from '@progress/kendo-angular-grid';
+import { SecureAuth } from "../../helpers/secure-auth";
 import { process } from '@progress/kendo-data-query';
 import { employees } from './employees';
 import { images } from './images';
@@ -22,22 +23,65 @@ export class TrainersComponent implements OnInit {
   userSearchParams: UserSearchParams;
   userTypes: [] = [];
   itemsPerPage: number;
+  _userController: string;
+  _userMethod: string;
   totalItems: any;
   page: any = 1;
   previousPage: any;
+  _types: any;
+  _decryptedUser: any;
+  _secureAuth: SecureAuth;
+
+  _dates: any = new Date();
+  _pdfFileName = `Trainers_${Date.parse(this._dates)}.pdf`;
+  _excelFileName = `Trainers_${Date.parse(this._dates)}.xlsx`;
   public gridData: any[] = employees;
   public gridView: any[];
 
   public mySelection: string[] = [];
 
-  constructor(private _userSevice: UsersService, private _router: Router, private http: HttpClient) {
+  constructor(
+    private _users: UsersService,
+    private _router: Router,
+    private http: HttpClient
+  ) {
     this._userRequestParams = new UserRequestParams();
     this.userSearchParams = new UserSearchParams();
     this.itemsPerPage = this._userRequestParams.PageSize;
+    this._secureAuth = new SecureAuth();
+    let sidebarRootElement = document.getElementById("root");
+    sidebarRootElement.style.display = "block";
+    let sidebarChildElement = document.getElementById("child");
+    sidebarChildElement.style.display = "none";
+    this._types = [
+      { typeId: "40eec394-8d0f-426a-a43a-f4a55e3efea1", type: "Admin" },
+      { typeId: "51882a3c-33f9-4ff5-a721-4d1ba86430e2", type: "Trainer" },
+      { typeId: "5a9b19d7-09c2-4c88-8254-c19277896160", type: "Client" },
+      { typeId: "ae78a41e-f9a7-4bc9-b020-df5239be398f", type: "Super Admin" }
+    ];
   }
 
   ngOnInit() {
-    this.gridView = this.gridData;
+    // this.gridView = this.gridData;
+    this.getClients();
+    // console.log(this._types);
+  }
+
+  getClients() {
+    const _controllerName = "users";
+    const _methodName = "user/by-type";
+    const _type = this._types.find(t => t.type === 'Trainer');
+    const user = JSON.parse(sessionStorage.user);
+    if (user) {
+      this._users
+        .getByType(_controllerName, _methodName, _type.typeId)
+        .subscribe((ut: any) => {
+          if(ut && ut.res) {
+            ut.res.map(data => { data.country = "US"; data.is_online = true; data.address = data.address1 + data.address2; data.rating = 3; })
+            this.gridView = ut.res;
+          }
+        });
+    }
   }
 
   onFilter(inputValue: string): void {

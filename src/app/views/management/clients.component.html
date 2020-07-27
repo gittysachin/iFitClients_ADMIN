@@ -28,7 +28,7 @@
                         <kendo-grid-column field="full_name" title="Name" [width]="220">
                             <ng-template kendoGridCellTemplate let-dataItem>
                                 <div class="customer-photo" [ngStyle]="{'background-image' : photoURL(dataItem)}"></div>
-                                <div class="customer-name">{{ dataItem.full_name }}</div>
+                                <div class="customer-name">{{ dataItem.first_name + " " + dataItem.last_name }}</div>
                             </ng-template>
                         </kendo-grid-column>
                         <kendo-grid-column field="country" title="Country" [width]="100" [class]="{'text-center': true}"

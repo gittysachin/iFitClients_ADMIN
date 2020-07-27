@@ -38,29 +38,8 @@ export class LoginComponent implements OnInit {
     this._authController = "auth";
     this._authMethod = "login";
     if (this._user) {
-<<<<<<< HEAD
-      this._auth
-        .authUsers(this._authController, this._authMethod, this._user)
-        .subscribe(
-          (_users: any) => {
-            if (_users && _users.token) {
-              sessionStorage.setItem("token", _users.token);
-              sessionStorage.setItem("user", JSON.stringify(_users.user));
-              this.router.navigate(["/dashboard"]);
-            } else {
-              this.Message = _users.message;
-            }
-            this.spinner.hide();
-          },
-          (error) => {
-            this.Message = `Error while authenticating user details. Please try again!`;
-            this.spinner.hide();
-          }
-        );
-=======
       this._auth.authUsers(this._authController, this._authMethod, this._user).subscribe((_users: any) => {
         if (_users && _users.token) {
-          debugger;
           if(_users && _users.user && _users.user.usersType && _users.user.usersType.type.toLowerCase() === 'client') {
             this.Message = 'Invalid user. This type of user can not access administration panel! For more details, contact your administrator.';  
           } else {
@@ -76,7 +55,6 @@ export class LoginComponent implements OnInit {
         this.Message = `Error while authenticating user details. Please try again!`;
         this.spinner.hide();
       })
->>>>>>> 9d4709ced18db60809889c967686130eec8d51f8
     } else {
       this.spinner.hide();
       this.Message = "Something went wrong!";

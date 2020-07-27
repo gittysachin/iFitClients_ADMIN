@@ -33,16 +33,13 @@ export class ClientsComponent implements OnInit {
   totalItems: any;
   page: any = 1;
   previousPage: any;
-<<<<<<< HEAD
   _types: any;
   _decryptedUser: any;
   _secureAuth: SecureAuth;
 
-=======
   _dates: any = new Date();
   _pdfFileName = `Clients_${Date.parse(this._dates)}.pdf`;
   _excelFileName = `Clients_${Date.parse(this._dates)}.xlsx`;
->>>>>>> 9d4709ced18db60809889c967686130eec8d51f8
   public gridData: any[] = employees;
   public gridView: any[];
 
@@ -61,25 +58,33 @@ export class ClientsComponent implements OnInit {
     sidebarRootElement.style.display = "block";
     let sidebarChildElement = document.getElementById("child");
     sidebarChildElement.style.display = "none";
-    this._types = [];
+    this._types = [
+      { typeId: "40eec394-8d0f-426a-a43a-f4a55e3efea1", type: "Admin" },
+      { typeId: "51882a3c-33f9-4ff5-a721-4d1ba86430e2", type: "Trainer" },
+      { typeId: "5a9b19d7-09c2-4c88-8254-c19277896160", type: "Client" },
+      { typeId: "ae78a41e-f9a7-4bc9-b020-df5239be398f", type: "Super Admin" }
+    ];
   }
 
   ngOnInit() {
-    this.gridView = this.gridData;
+    // this.gridView = this.gridData;
     this.getClients();
     // console.log(this._types);
   }
 
   getClients() {
     const _controllerName = "users";
-    const _methodName = "by-type";
-    const _type = { type: "Client" };
+    const _methodName = "user/by-type";
+    const _type = this._types.find(t => t.type === 'Client');
     const user = JSON.parse(sessionStorage.user);
     if (user) {
       this._users
-        .getByType(_controllerName, _methodName, _type)
+        .getByType(_controllerName, _methodName, _type.typeId)
         .subscribe((ut: any) => {
-          console.log(ut);
+          if(ut && ut.res) {
+            ut.res.map(data => { data.country = "US"; data.is_online = true; data.address = data.address1 + data.address2; data.rating = 3; })
+            this.gridView = ut.res;
+          }
         });
     }
   }

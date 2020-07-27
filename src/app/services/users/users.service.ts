@@ -26,15 +26,15 @@ export class UsersService {
     return this._http.get(_url, httpOptions);
   };
 
-  getByType = (_controllerName: string, _method: string, body: any) => {
+  getByType = (_controllerName: string, _method: string, _typeId: any) => {
     const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
         Authorization: "Bearer " + this._token,
       }),
     };
-    let _url = `${environment.BASE_API_URL}${_controllerName}/${_method}`;
-    return this._http.post(_url, body, httpOptions);
+    let _url = `${environment.BASE_API_URL}${_controllerName}/${_method}?typeId=${_typeId}`;
+    return this._http.get(_url, httpOptions);
   };
 
   getById = (_controllerName: string, params: any) => {
