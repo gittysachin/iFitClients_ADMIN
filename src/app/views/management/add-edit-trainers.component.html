@@ -20,9 +20,6 @@
             </div>
           </div>
           <div class="col-3 mb-3">
-            <input class="form-control" placeholder="Middle Name" id="MiddleName" name="MiddleName" [(ngModel)]="_user.MiddleName" />
-          </div>
-          <div class="col-3 mb-3">
             <input [ngClass]="{ 'is-invalid': f.submitted && LastName.invalid && (LastName.dirty || LastName.touched) }" class="form-control" placeholder="Last Name" name="LastName" id="LastName" [(ngModel)]="_user.LastName" #LastName="ngModel" required />
             <div *ngIf="f.submitted && LastName.invalid && (LastName.dirty || LastName.touched)" class="invalid-feedback">
               <div *ngIf="LastName.errors.required">Lastname is required.</div>
@@ -34,10 +31,18 @@
               <div *ngIf="Mobile.errors.required">Mobile is required.</div>
             </div>
             <div *ngIf="!_isMobileValid" class="alert alert-danger">
-              Mobile is already exist! Please try another.
+              Mobile already exist! Please try another.
             </div>
           </div>
+          <div class="col-3 mb-3">
+            <select class="form-control" #Gender="ngModel" name="Gender" id="Gender" [(ngModel)]="_user.Gender">
+              <option value="null">Select Gender</option>
+              <option *ngFor="let u of _gender" [value]="u.gender">{{ u.gender }}
+              </option>
+            </select>
+          </div>
         </div>
+        
         <div class="row col-12">
           <div class="col-3 mb-3">
             <div class="input-group">
@@ -60,9 +65,6 @@
             </div>
           </div>
           <div class="col-3 mb-3">
-            <input class="form-control" maxlength="8" numbersOnly name="PhoneNo" id="" [(ngModel)]="_user.PhoneNo" placeholder="Phoen No." />
-          </div>
-          <div class="col-3 mb-3">
             <select [ngClass]="{ 'is-invalid': f.submitted && UserTypeId.invalid && (UserTypeId.dirty || UserTypeId.touched) }" class="form-control" #UserTypeId="ngModel" name="UserTypeId" id="UserTypeId" [(ngModel)]="_user.UserTypeId" required>
               <option [ngValue]="null">Select User's Type</option>
               <option *ngFor="let u of _userTypes" [value]="u.UserTypeId">{{u.UserTypeDescription}}
@@ -71,6 +73,16 @@
             <div *ngIf="f.submitted && UserTypeId.invalid && (UserTypeId.dirty || UserTypeId.touched)" class="invalid-feedback">
               <div *ngIf="UserTypeId.errors.required">User's type is required.</div>
             </div>
+          </div>
+          <div class="col-3 mb-3">
+            <input [ngClass]="{
+                'is-invalid':
+                  f.submitted &&
+                  Salutation.invalid &&
+                  (Salutation.dirty || Salutation.touched)
+              }" class="form-control" placeholder="Salutation" name="Salutation" id="Salutation" maxlength="11"
+              [(ngModel)]="_user.Salutation" #Salutation="ngModel"
+              (blur)="validateColumns('Salutation', _user.Salutation)" />
           </div>
         </div>
         <div class="row col-12">
@@ -88,8 +100,19 @@
               <div *ngIf="confirmPassword.errors.mustMatch">Passwords must match</div>
             </div>
           </div>
-          <div class="col-3 mb-3">&nbsp;</div>
-          <div class="col-3 mb-3">&nbsp;</div>
+          <div class="col-3 mb-3">
+            <input [ngClass]="{
+                'is-invalid':
+                  f.submitted &&
+                  About.invalid &&
+                  (About.dirty || About.touched)
+              }" class="form-control" placeholder="About" name="About" id="About" maxlength="300"
+              [(ngModel)]="_user.About" #About="ngModel"
+              (blur)="validateColumns('About', _user.About)" />
+          </div>
+          <div class="col-3 mb-3">
+            <input name="avatar" type="file" [(ngModel)]="_user.Avatar" (change)="onChange($event)" />
+          </div>
         </div>
         <div class="col-12">&nbsp;</div>
         <div class="col-12">

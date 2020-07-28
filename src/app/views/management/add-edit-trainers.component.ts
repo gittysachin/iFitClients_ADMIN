@@ -16,11 +16,17 @@ export class AddEditTrainersComponent implements OnInit {
   id: number;
   _title: string;
   _user: any;
-  _userTypes: [] = [];
+  _userTypes: any;
   _states: [] = [];
   _districts: [] = [];
   _talukas: [] = [];
   _cities: [] = [];
+  file: File;
+  _gender = [
+    { gender: "Male" },
+    { gender: "Female" },
+    { gender: "Not Specified" },
+  ];
   _decryptedUser: any;
   _secureAuth: SecureAuth;
   _isMobileValid: boolean;
@@ -40,6 +46,13 @@ export class AddEditTrainersComponent implements OnInit {
     sidebarRootElement.style.display = 'block';
     let sidebarChildElement = document.getElementById('child');
     sidebarChildElement.style.display = 'none';
+    this._userTypes = [
+      { UserTypeId: "40eec394-8d0f-426a-a43a-f4a55e3efea1", UserTypeDescription: "Admin" },
+      { UserTypeId: "51882a3c-33f9-4ff5-a721-4d1ba86430e2", UserTypeDescription: "Trainer" },
+      { UserTypeId: "5a9b19d7-09c2-4c88-8254-c19277896160", UserTypeDescription: "Client" },
+      { UserTypeId: "ae78a41e-f9a7-4bc9-b020-df5239be398f", UserTypeDescription: "Super Admin" }
+    ];
+    this._user.Gender=null;
   }
 
   ngOnInit() {
@@ -66,21 +79,56 @@ export class AddEditTrainersComponent implements OnInit {
     this._router.navigate(["/manage/trainers-management"]);
   }
 
+  onChange(event: any) {
+    var files = event.srcElement.files;
+    this.file = files[0];
+  }
+
   SaveUsers() {
-    // let _controllerName = "Users";
-    // let _methodName = "SaveUsers";
-    // let encryptedUser = sessionStorage.getItem('user');
-    // this._decryptedUser = JSON.parse(this._secureAuth.decryptUsingAES256(encryptedUser));
-    // if (this.id !== undefined && this.id !== null) {
-    //   this._user.UpdatedBy = this._decryptedUser.UserId;
-    // } else {
-    //   this._user.CreatedBy = this._decryptedUser.UserId;
-    // }
-    // this._userSevice.Users(_controllerName, _methodName, this._user).subscribe((ur: any) => {
-    //   if (ur !== undefined && ur !== 'undefined' && ur !== null && ur !== 'null' && ur !== '') {
-    this.BackToList();
-    //   }
-    // })
+    const _controllerName = "Users";
+    const encryptedUser = sessionStorage.getItem("user");
+    this._decryptedUser = JSON.parse(encryptedUser);
+    if (this.id !== undefined && this.id !== null) {
+      this._user.UpdatedBy = this._decryptedUser.UserId;
+      this._user.UserId = this._activatedRoute.snapshot.params.id;
+    } else {
+      this._user.CreatedBy = this._decryptedUser.UserId;
+    }
+    console.log(this._user)
+    let formData: FormData = new FormData();
+    // formData.append("UserId", this._user.UserId);
+    formData.append("avatar_uri", this.file || this._user.Avatar);
+    formData.append("user_type_id", this._user.UserTypeId);
+    formData.append("first_name", this._user.FirstName);
+    formData.append("last_name", this._user.LastName);
+    formData.append("phone", this._user.Mobile);
+    formData.append("email", this._user.EmailId);
+    formData.append("salutation", this._user.Salutation);
+    if (this._user.BirthDate) {
+      formData.append("dob", this._user.BirthDate.toString());
+    }
+    formData.append("sex", this._user.Gender);
+    formData.append("credentials", this._user.Password);
+    formData.append("address1", this._user.Address1);
+    formData.append("address2", this._user.Address2);
+    formData.append("zipcode", this._user.ZipCode);
+    formData.append("about", this._user.About);
+    console.log(formData)
+    this._userSevice
+      .save(_controllerName, formData)
+      .subscribe((ur: any) => {
+        if (
+          ur !== undefined &&
+          ur !== "undefined" &&
+          ur !== null &&
+          ur !== "null" &&
+          ur !== ""
+        ) {
+          setTimeout(() => {
+            this.BackToList();
+          }, 5000);
+        }
+      });
   }
 
   validateColumns(_columnName: string, _params: string) {
