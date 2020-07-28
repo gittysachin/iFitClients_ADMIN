@@ -55,6 +55,7 @@ export class UsersService {
       }),
     };
     let _url = `${environment.BASE_API_URL}${_controllerName}`;
+    console.log(params)
     return this._http.put(_url, params, httpOptions);
   };
 

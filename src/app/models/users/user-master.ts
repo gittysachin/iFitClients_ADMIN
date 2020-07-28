@@ -1,5 +1,5 @@
 export class UserMaster {
-    UserId: number;
+    UserId: string;
     UserTypeId: number;
     Mobile: string;
     EmailId: string;
@@ -30,8 +30,12 @@ export class UserMaster {
     CreatedBy:number;
     UpdatedBy:number;
     isActive: boolean;
+    About: string;
+    Gender: string;
+    Avatar: string;
 
     constructor() {
+        this.UserId = null;
         this.UserTypeId = null;
         this.StateId = null;
         this.DistrictId = null;

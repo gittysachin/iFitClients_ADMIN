@@ -59,20 +59,35 @@ export class AddEditTrainersComponent implements OnInit {
     this.GetUserById();
   }
   GetUserById() {
-    // let _controllerName = 'Users';
-    // let _methodName = 'GetUserById';
+    let _controllerName = 'Users';
     if (this.id !== undefined && this.id !== null) {
-      this._user = employees.filter(x => x.id.toString() === this.id.toString())[0];
-      console.log(this._user);
-      // this._userSevice.userById(_controllerName, _methodName, this.id).subscribe((ud: any) => {
-      //   this._user = ud;
-      //   this._user.ConfirmPassword = ud.Password;
-      //   this._user.BirthDate = new Date(ud.BirthDate);
-      //   this.getAllDistricts(this._user.StateId);
-      //   this.getAllTalukas(this._user.DistrictId);
-      //   this.GetAllCities(this._user.TalukaId);
-      // });
+      this._userSevice.getById(_controllerName, this.id).subscribe((ud: any) => {
+        if(ud && ud.res) {
+          this._user.UserId = ud.res.id;
+          this._user.FirstName = ud.res.first_name;
+          this._user.UserTypeId = ud.res.user_type_id;
+          this._user.LastName = ud.res.last_name;
+          this._user.EmailId = ud.res.email;
+          this._user.BirthDate = new Date(ud.res.dob);
+          this._user.Mobile = ud.res.phone;
+          this._user.Avatar = ud.res.avatar_uri;
+          this._user.Gender = ud.res.sex;
+          this._user.Salutation =
+            ud.res.salutation === undefined ? "" : ud.res.salutation;
+          this._user.Password = ud.res.credentials;
+          this._user.ConfirmPassword = ud.res.credentials;
+          this._user.About = ud.res.about;
+          this._user.Address1 = ud.res.address1;
+          this._user.Address2 = ud.res.address2;
+          this._user.ZipCode = ud.res.zipcode;
+        }
+        // this._user.ConfirmPassword = ud.Password;
+        // this._user.BirthDate = new Date(ud.BirthDate);
+      });
+    } else {
+      this._user = [];
     }
+
   }
 
   BackToList() {
@@ -94,10 +109,9 @@ export class AddEditTrainersComponent implements OnInit {
     } else {
       this._user.CreatedBy = this._decryptedUser.UserId;
     }
-    console.log(this._user)
     let formData: FormData = new FormData();
-    // formData.append("UserId", this._user.UserId);
-    formData.append("avatar_uri", this.file || this._user.Avatar);
+    formData.append("UserId", this._user.UserId);
+    formData.append("avatar_uri", this._user.Avatar);
     formData.append("user_type_id", this._user.UserTypeId);
     formData.append("first_name", this._user.FirstName);
     formData.append("last_name", this._user.LastName);
@@ -113,9 +127,9 @@ export class AddEditTrainersComponent implements OnInit {
     formData.append("address2", this._user.Address2);
     formData.append("zipcode", this._user.ZipCode);
     formData.append("about", this._user.About);
-    console.log(formData)
-    this._userSevice
-      .save(_controllerName, formData)
+    if(this._user.UserId) {
+      this._userSevice
+      .update(_controllerName, formData)
       .subscribe((ur: any) => {
         if (
           ur !== undefined &&
@@ -123,12 +137,30 @@ export class AddEditTrainersComponent implements OnInit {
           ur !== null &&
           ur !== "null" &&
           ur !== ""
-        ) {
-          setTimeout(() => {
-            this.BackToList();
-          }, 5000);
-        }
-      });
+          ) {
+            setTimeout(() => {
+              this.BackToList();
+            }, 5000);
+          }
+        });
+      }
+      else {
+        this._userSevice
+        .save(_controllerName, formData)
+        .subscribe((ur: any) => {
+          if (
+            ur !== undefined &&
+            ur !== "undefined" &&
+            ur !== null &&
+            ur !== "null" &&
+            ur !== ""
+            ) {
+              setTimeout(() => {
+                this.BackToList();
+              }, 5000);
+            }
+          });
+      }
   }
 
   validateColumns(_columnName: string, _params: string) {

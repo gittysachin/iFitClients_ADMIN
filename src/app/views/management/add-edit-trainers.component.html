@@ -46,7 +46,9 @@
         <div class="row col-12">
           <div class="col-3 mb-3">
             <div class="input-group">
-              <input class="form-control" readonly placeholder="Birth Date (dd/mm/yyyy)" name="dp" [(ngModel)]="_user.BirthDate" ngbDatepicker #d="ngbDatepicker" [minDate]="{year: 1970, month: 1, day: 1}" />
+              <input class="form-control" readonly placeholder="Birth Date (dd/mm/yyyy)" name="BirthDate"
+                [(ngModel)]="_user.BirthDate" ngbDatepicker #d="ngbDatepicker"
+                [minDate]="{ year: 1970, month: 1, day: 1 }" />
               <div class="input-group-append">
                 <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
                   <i style="color: #000;font-size: 16px;" class="cui-calendar icons"></i>
