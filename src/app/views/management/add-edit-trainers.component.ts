@@ -84,10 +84,7 @@ export class AddEditTrainersComponent implements OnInit {
         // this._user.ConfirmPassword = ud.Password;
         // this._user.BirthDate = new Date(ud.BirthDate);
       });
-    } else {
-      this._user = [];
-    }
-
+    } 
   }
 
   BackToList() {
@@ -111,7 +108,7 @@ export class AddEditTrainersComponent implements OnInit {
     }
     let formData: FormData = new FormData();
     formData.append("UserId", this._user.UserId);
-    formData.append("avatar_uri", this._user.Avatar);
+    formData.append("avatar_uri", this.file || this._user.Avatar);
     formData.append("user_type_id", this._user.UserTypeId);
     formData.append("first_name", this._user.FirstName);
     formData.append("last_name", this._user.LastName);
