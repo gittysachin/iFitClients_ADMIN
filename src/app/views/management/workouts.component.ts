@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UsersService } from '../../services/users/users.service';
+import { WorkoutService } from '../../services/workout/workout.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserRequestParams } from '../../models/users/user-request-params';
@@ -10,7 +11,6 @@ import { HttpClient } from '@angular/common/http';
 import { DataBindingDirective } from '@progress/kendo-angular-grid';
 import { SecureAuth } from "../../helpers/secure-auth";
 import { process } from '@progress/kendo-data-query';
-import { employees } from './employees';
 import { images } from './images';
 
 @Component({
@@ -31,14 +31,18 @@ export class WorkoutsComponent implements OnInit {
   workoutVideoChannel: Array<any> = [];
   videoURL: any = '';
   _types: any;
+  _video: any;
   _secureAuth: SecureAuth;
   public gridData: any[];
   public gridView: any[];
+
+  public mySelection: string[] = [];
 
   constructor(private modalService: NgbModal,
     private _router: Router,
     private _http: HttpClient,
     private _users: UsersService,
+    private _workout: WorkoutService,
     private sanitizer: DomSanitizer) {
     const selectedClient = localStorage.getItem('selectedclient');
     const parsedClientJson = JSON.parse(selectedClient);
@@ -89,10 +93,9 @@ export class WorkoutsComponent implements OnInit {
         .getByType(_controllerName, _methodName, _type.typeId)
         .subscribe((ut: any) => {
           if(ut && ut.res) {
-            ut.res.map(data => { data.country = "US"; data.is_online = true; data.address = data.address1 + " " + data.address2; data.rating = 3; })
+            ut.res.map(data => { data.full_name = data.first_name + " " + data.last_name; data.country = "US"; data.is_online = true; data.address = data.address1 + " " + data.address2; data.rating = 3; })
             // this.gridView = ut.res;
             this.gridView = ut.res;
-            console.log(ut.res)
           }
         });
     }
@@ -135,21 +138,27 @@ export class WorkoutsComponent implements OnInit {
     this.dataBinding.skip = 0;
   }
 
-  AssignWorkout(modal: any) {
+  AssignWorkout(modal: any, video: any) {
     this.getClients();
+    this._video = video;
     this.modalReference = this.modalService.open(modal, {
       size: 'lg',
       centered: true
     })
   }
 
-  assignToUsers(usersListForm) {
-    if (usersListForm.form.status == "INVALID") {
-      Object.keys(usersListForm.controls).forEach(key => {
-        usersListForm.controls[key].markAsDirty();
-      });
-      return false;
-    }
+  assignToUsers() { // (usersListForm)
+    // if (usersListForm.form.status == "INVALID") {
+    //   Object.keys(usersListForm.controls).forEach(key => {
+    //     usersListForm.controls[key].markAsDirty();
+    //   });
+    //   return false;
+    // }
+
+    let changed = [];
+
+    let url = "https://www.youtube.com/watch?v=" + this._video.contentDetails.videoId;
+    console.log(this.mySelection, this.gridView, url);
 
     // if (this.category.id) {
     //   this.spinner.show();
@@ -190,21 +199,51 @@ export class WorkoutsComponent implements OnInit {
   }
 
   getAllWorkoutVideos() {
-    this._http.get(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=PL-8fyND0sPmNpAtmAEMQgYCUFxR_ayE8p&key=AIzaSyDGoB0_NkgBZvzWkpRHrLxz2TTOxxIYjUI&maxResults=25`).subscribe((res: any) => {
-      if (res && res.items && res.items.length > 0) {
-        let itemsObj = res.items;
-        for (let i = 0; i < itemsObj.length; i++) {
-          let item: any = {};
-          item.publishedAt = itemsObj[i].snippet.publishedAt;
-          item.title = itemsObj[i].snippet.title;
-          item.description = itemsObj[i].snippet.description;
-          item.channelTitle = itemsObj[i].snippet.channelTitle;
-          item.thumbnails = itemsObj[i].snippet.thumbnails.medium;
-          item.contentDetails = itemsObj[i].contentDetails;
-          this.workoutVideoChannel.push(item);
-        }
-      }
-    })
+    // this._http.get(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=PL-8fyND0sPmNpAtmAEMQgYCUFxR_ayE8p&key=AIzaSyDGoB0_NkgBZvzWkpRHrLxz2TTOxxIYjUI&maxResults=25`).subscribe((res: any) => {
+    //   if (res && res.items && res.items.length > 0) {
+    //     let itemsObj = res.items;
+    //     for (let i = 0; i < itemsObj.length; i++) {
+    //       let item: any = {};
+    //       item.publishedAt = itemsObj[i].snippet.publishedAt;
+    //       item.title = itemsObj[i].snippet.title;
+    //       item.description = itemsObj[i].snippet.description;
+    //       item.channelTitle = itemsObj[i].snippet.channelTitle;
+    //       item.thumbnails = itemsObj[i].snippet.thumbnails.medium;
+    //       item.contentDetails = itemsObj[i].contentDetails;
+    //       this.workoutVideoChannel.push(item);
+    //       console.log(item)
+    //     }
+    //   }
+    // })
+
+    const _controllerName = "workout";
+    const _methodName = "";
+    const user = JSON.parse(sessionStorage.user);
+    if (user) {
+      this._workout
+        .get(_controllerName)
+        .subscribe((ut: any) => {
+          if(ut && ut.res) {
+            console.log(ut.res);
+
+            ut.res.map(workout => {
+              let item: any = {};
+              let url = workout.url;
+              var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+              var match = url.match(regExp);
+              let videoId = (match&&match[7].length==11)? match[7] : false;
+              item.thumbnails = {};
+              item.thumbnails.url = `http://img.youtube.com/vi/${videoId}/0.jpg`;
+              item.thumbnails.height = 180;
+              item.thumbnails.width = 320;
+              console.log(item.thumbnails)
+              item.title = workout.name;
+              item.contentDetails = workout.description;
+              this.workoutVideoChannel.push(item);
+            })
+          }
+        });
+    }
   }
 
   AddNewVideo() {
@@ -213,5 +252,19 @@ export class WorkoutsComponent implements OnInit {
 
   BackToList() {
     this._router.navigate(["/manage/workout/category"]);
+  }
+
+  photoURL(dataItem: any): string {
+    const code: string = dataItem.img_id + dataItem.gender;
+    const image: any = images;
+
+    return image[code];
+  }
+
+  flagURL(dataItem: any): string {
+    const code: string = dataItem.country;
+    const image: any = images;
+
+    return image[code];
   }
 }
