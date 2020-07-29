@@ -5,29 +5,39 @@
   <div class="card">
     <div class="card-header">
       <strong>{{_title}} User</strong>
-      <button style="float: right;background: rgb(38, 153, 251);;width: 100px;" class="btn btn-block btn-primary" type="button" (click)="BackToList()">
+      <button style="float: right;background: rgb(38, 153, 251);;width: 100px;" class="btn btn-block btn-primary"
+        type="button" (click)="BackToList()">
         <i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;Back
       </button>
     </div>
     <div class="card-body">
       <div class="row">
         <div class="col-10">
-          <form name="UsersAddEdit" (ngSubmit)="f.form.valid && saves()" #f="ngForm" enctype="multipart/form-data" [mustMatch]="['credentials', 'confirmcredentials']" novalidate>
+          <form name="UsersAddEdit" (ngSubmit)="f.form.valid && saves()" #f="ngForm" enctype="multipart/form-data"
+            [mustMatch]="['credentials', 'confirmcredentials']" novalidate>
             <div class="col-12">
               <h4>General Detail</h4>
             </div>
             <div class="row col-12">
               <div class="col-3  mb-3">
                 <label>First Name</label>
-                <input [ngClass]="{ 'is-invalid': f.submitted && first_name.invalid && (first_name.dirty || first_name.touched)}" class="form-control" placeholder="First Name" name="first_name" id="first_name" [(ngModel)]="iFitUser.first_name" #first_name="ngModel" required />
-                <div *ngIf="f.submitted && first_name.invalid && (first_name.dirty || first_name.touched)" class="invalid-feedback">
+                <input
+                  [ngClass]="{ 'is-invalid': f.submitted && first_name.invalid && (first_name.dirty || first_name.touched)}"
+                  class="form-control" placeholder="First Name" name="first_name" id="first_name"
+                  [(ngModel)]="iFitUser.first_name" #first_name="ngModel" required autocomplete="new-password"/>
+                <div *ngIf="f.submitted && first_name.invalid && (first_name.dirty || first_name.touched)"
+                  class="invalid-feedback">
                   <div *ngIf="first_name.errors.required">First name is required.</div>
                 </div>
               </div>
               <div class="col-3 mb-3">
                 <label>Last Name</label>
-                <input [ngClass]="{ 'is-invalid': f.submitted && last_name.invalid && (last_name.dirty || last_name.touched)}" class="form-control" placeholder="Last Name" name="last_name" id="last_name" [(ngModel)]="iFitUser.last_name" #last_name="ngModel" required />
-                <div *ngIf="f.submitted && last_name.invalid && (last_name.dirty || last_name.touched)" class="invalid-feedback">
+                <input
+                  [ngClass]="{ 'is-invalid': f.submitted && last_name.invalid && (last_name.dirty || last_name.touched)}"
+                  class="form-control" placeholder="Last Name" name="last_name" id="last_name"
+                  [(ngModel)]="iFitUser.last_name" #last_name="ngModel" required autocomplete="new-password"/>
+                <div *ngIf="f.submitted && last_name.invalid && (last_name.dirty || last_name.touched)"
+                  class="invalid-feedback">
                   <div *ngIf="last_name.errors.required">Last Name is required.</div>
                 </div>
               </div>
@@ -37,11 +47,15 @@
               </div>
               <div class="col-3 mb-3">
                 <label>User Type</label>
-                <select [ngClass]="{ 'is-invalid': f.submitted && user_type_id.invalid && (user_type_id.dirty || user_type_id.touched)}" class="form-control" [(ngModel)]="iFitUser.user_type_id" id="user_type_id" name="user_type_id" #user_type_id="ngModel" required>
+                <select
+                  [ngClass]="{ 'is-invalid': f.submitted && user_type_id.invalid && (user_type_id.dirty || user_type_id.touched)}"
+                  class="form-control" [(ngModel)]="iFitUser.user_type_id" id="user_type_id" name="user_type_id"
+                  #user_type_id="ngModel" required>
                   <option value="">Select User Type</option>
                   <option *ngFor="let item of userTypes" value="{{item.id}}">{{item.type}}</option>
                 </select>
-                <div *ngIf="f.submitted && user_type_id.invalid && (user_type_id.dirty || user_type_id.touched)" class="invalid-feedback">
+                <div *ngIf="f.submitted && user_type_id.invalid && (user_type_id.dirty || user_type_id.touched)"
+                  class="invalid-feedback">
                   <div *ngIf="user_type_id.errors.required">User type is required.</div>
                 </div>
               </div>
@@ -49,11 +63,13 @@
             <div class="row col-12">
               <div class="col-3  mb-3">
                 <label>About</label>
-                <textarea class="form-control" rows="3" id="about" name="about" placeholder="Write about this user..." [(ngModel)]="iFitUser.about" #about="ngModel"></textarea>
+                <textarea class="form-control" rows="3" id="about" name="about" placeholder="Write about this user..."
+                  [(ngModel)]="iFitUser.about" #about="ngModel" autocomplete="new-password"></textarea>
               </div>
               <div class="col-3  mb-3">
                 <label>Salutation</label>
-                <input class="form-control" placeholder="Salutation" name="salutation" id="salutation" [(ngModel)]="iFitUser.salutation" #salutation="ngModel" />
+                <input class="form-control" placeholder="Salutation" name="salutation" id="salutation"
+                  [(ngModel)]="iFitUser.salutation" #salutation="ngModel" autocomplete="new-password"/>
               </div>
               <div class="col-3  mb-3">
                 <label>Sex</label>
@@ -65,17 +81,34 @@
               <div class="col-3  mb-3">
                 <label>Date of birth</label>
                 <div class="input-box-container">
-                  <input class="input-box" class="form-control" placeholder="Click to select a date" angular-mydatepicker name="dob" (click)="dp.toggleCalendar()" [(ngModel)]="iFitUser.dob" [options]="myDpOptions" #dp="angular-mydatepicker" />
+                  <input class="input-box" class="form-control" placeholder="Click to select a date"
+                    angular-mydatepicker name="dob" (click)="dp.toggleCalendar()" [(ngModel)]="iFitUser.dob"
+                    [options]="myDpOptions" #dp="angular-mydatepicker" autocomplete="new-password"/>
                 </div>
               </div>
             </div>
             <div class="row col-12">
               <div class="col-3  mb-3">
                 <label>Facility Code</label>
-                <input [ngClass]="{ 'is-invalid': f.submitted && facility_code.invalid && (facility_code.dirty || facility_code.touched)}" class="form-control" placeholder="Facility Code" name="facility_code" id="facility_code" [(ngModel)]="iFitUser.facility_code" #facility_code="ngModel" required />
-                <div *ngIf="f.submitted && facility_code.invalid && (facility_code.dirty || facility_code.touched)" class="invalid-feedback">
+                <input
+                  [ngClass]="{ 'is-invalid': f.submitted && facility_code.invalid && (facility_code.dirty || facility_code.touched)}"
+                  class="form-control" placeholder="Facility Code" name="facility_code" id="facility_code"
+                  [(ngModel)]="iFitUser.facility_code" #facility_code="ngModel" required autocomplete="new-password"/>
+                <div *ngIf="f.submitted && facility_code.invalid && (facility_code.dirty || facility_code.touched)"
+                  class="invalid-feedback">
                   <div *ngIf="facility_code.errors.required">Facility code is required.</div>
                 </div>
+              </div>
+              <div class="col-3 mb-3">
+                <label>Select business Owner</label>
+                <input id="bownerid" name="bownerid" type="text" class="form-control"
+                  [class.is-invalid]="searchFailedForBusinessOwner" [(ngModel)]="iFitUser.bownerid"
+                  [ngbTypeahead]="searchBusinessOwner" [resultFormatter]="BusinessOwnersResultFormatBandListValue"
+                  [inputFormatter]="BusinessOwnersInputFormatBandListValue" placeholder="Select Business Owner"
+                  #bownerid="ngModel" autocomplete="new-password" />
+                <small *ngIf="searchingBusinessOwner" class="form-text text-muted">Searching
+                  Business Owner...
+                </small>
               </div>
             </div>
             <div class="col-12">
@@ -84,14 +117,18 @@
             <div class="row col-12">
               <div class="col-3  mb-3">
                 <label>Contact No.</label>
-                <input [ngClass]="{ 'is-invalid': f.submitted && phone.invalid && (phone.dirty || phone.touched)}" class="form-control" placeholder="Contact No." name="phone" id="phone" [(ngModel)]="iFitUser.phone" #phone="ngModel" required />
+                <input [ngClass]="{ 'is-invalid': f.submitted && phone.invalid && (phone.dirty || phone.touched)}"
+                  class="form-control" placeholder="Contact No." name="phone" id="phone" [(ngModel)]="iFitUser.phone"
+                  #phone="ngModel" required autocomplete="new-password"/>
                 <div *ngIf="f.submitted && phone.invalid && (phone.dirty || phone.touched)" class="invalid-feedback">
                   <div *ngIf="phone.errors.required">Contact No. is required.</div>
                 </div>
               </div>
               <div class="col-3 mb-3">
                 <label>Email</label>
-                <input [ngClass]="{ 'is-invalid': f.submitted && email.invalid && (email.dirty || email.touched)}" class="form-control" placeholder="Email" name="email" id="email" [(ngModel)]="iFitUser.email" #email="ngModel" required />
+                <input [ngClass]="{ 'is-invalid': f.submitted && email.invalid && (email.dirty || email.touched)}"
+                  class="form-control" placeholder="Email" name="email" id="email" [(ngModel)]="iFitUser.email"
+                  #email="ngModel" required autocomplete="new-password"/>
                 <div *ngIf="f.submitted && email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
                   <div *ngIf="email.errors.required">Email is required.</div>
                 </div>
@@ -103,25 +140,30 @@
             <div class="row col-12">
               <div class="col-3  mb-3">
                 <label>Address 1</label>
-                <input class="form-control" placeholder="Address 1" name="Address1" id="Address1" [(ngModel)]="iFitUser.address1" />
+                <input class="form-control" placeholder="Address 1" name="Address1" id="Address1"
+                  [(ngModel)]="iFitUser.address1" autocomplete="new-password"/>
               </div>
               <div class="col-3 mb-3">
                 <label>Address 2</label>
-                <input class="form-control" placeholder="Address 2" id="address2" name="address2" [(ngModel)]="iFitUser.address2" />
+                <input class="form-control" placeholder="Address 2" id="address2" name="address2"
+                  [(ngModel)]="iFitUser.address2" autocomplete="new-password"/>
               </div>
               <div class="col-3 mb-3">
                 <label>City</label>
-                <input type="text" class="form-control" name="city" id="city" [(ngModel)]="iFitUser.city" placeholder="City" />
+                <input type="text" class="form-control" name="city" id="city" [(ngModel)]="iFitUser.city"
+                  placeholder="City" autocomplete="new-password"/>
               </div>
               <div class="col-3 mb-3">
                 <label>State</label>
-                <input type="text" class="form-control" name="state" id="state" [(ngModel)]="iFitUser.state" placeholder="State" />
+                <input type="text" class="form-control" name="state" id="state" [(ngModel)]="iFitUser.state"
+                  placeholder="State" autocomplete="new-password"/>
               </div>
             </div>
             <div class="row col-12">
               <div class="col-3 mb-3">
                 <label>Zipcode</label>
-                <input type="text" class="form-control" name="ZipCode" id="ZipCode" [(ngModel)]="iFitUser.zipcode" maxlength="6" placeholder="Zipcode" />
+                <input type="text" class="form-control" name="ZipCode" id="ZipCode" [(ngModel)]="iFitUser.zipcode"
+                  maxlength="6" placeholder="Zipcode" autocomplete="new-password"/>
               </div>
             </div>
             <div class="col-12">
@@ -129,7 +171,9 @@
             </div>
             <div class="row col-12">
               <div class="col-3 mb-3">
-                <input type="password" class="form-control" name="credentials" [(ngModel)]="iFitUser.credentials" #credentials="ngModel" [ngClass]="{ 'is-invalid': f.submitted && credentials.invalid }" required minlength="6" placeholder="Password" [disabled]="id!==undefined" />
+                <input type="password" class="form-control" name="credentials" [(ngModel)]="iFitUser.credentials"
+                  #credentials="ngModel" [ngClass]="{ 'is-invalid': f.submitted && credentials.invalid }" required
+                  minlength="6" placeholder="Password" [disabled]="id!==undefined" autocomplete="new-password" />
                 <div *ngIf="f.submitted && credentials.invalid" class="invalid-feedback">
                   <div *ngIf="credentials.errors.required">Password is required</div>
                   <div *ngIf="credentials.errors.minlength">Password must be at least 6 characters
@@ -137,7 +181,10 @@
                 </div>
               </div>
               <div class="col-3 mb-3">
-                <input type="password" class="form-control" name="confirmcredentials" [(ngModel)]="iFitUser.confirmcredentials" #confirmcredentials="ngModel" [ngClass]="{ 'is-invalid': f.submitted && confirmcredentials.invalid }" placeholder="Confirm Password" required [disabled]="id!==undefined" />
+                <input type="password" class="form-control" name="confirmcredentials"
+                  [(ngModel)]="iFitUser.confirmcredentials" #confirmcredentials="ngModel"
+                  [ngClass]="{ 'is-invalid': f.submitted && confirmcredentials.invalid }" placeholder="Confirm Password"
+                  required [disabled]="id!==undefined" autocomplete="new-password" />
                 <div *ngIf="f.submitted && confirmcredentials.invalid" class="invalid-feedback">
                   <div *ngIf="confirmcredentials.errors.required">Confirm Password is required</div>
                   <div *ngIf="confirmcredentials.errors.mustMatch">Passwords must match</div>

@@ -5,6 +5,9 @@ import { UsersService } from '../../services/users/users.service';
 import { iFItSuperUser } from '../../models/users/ifit-user';
 import { IAngularMyDpOptions } from 'angular-mydatepicker';
 import { NgxSpinnerService } from "ngx-spinner";
+import { Observable, of } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap } from 'rxjs/operators';
+
 @Component({
   selector: 'app-add-edit-super-users',
   templateUrl: './add-edit-super-users.component.html'
@@ -32,6 +35,9 @@ export class AddEditSuperUsersComponent implements OnInit {
     dateFormat: 'mm/dd/yyyy'
   };
 
+  searchingBusinessOwner: boolean = false;
+  isBusinessOwnerFoundLength: any;
+  searchFailedForBusinessOwner: any;
   constructor(private _router: Router, private _activatedRoute: ActivatedRoute, private service: UsersService, private spinner: NgxSpinnerService) {
     this.id = this._activatedRoute.snapshot.params.id;
     this._secureAuth = new SecureAuth();
@@ -98,9 +104,40 @@ export class AddEditSuperUsersComponent implements OnInit {
     element.src = window.URL.createObjectURL(files[0]);
   }
 
-  saves() {
+  BusinessOwnersResultFormatBandListValue(value: any) {
+    return value.title;
+  }
+
+  BusinessOwnersInputFormatBandListValue(value: any) {
+    if (value.title)
+      return value.title
+    return value;
+  }
+
+  searchBusinessOwner = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      tap(() => this.searchingBusinessOwner = true),
+      switchMap(term =>
+        this.service.searchBusinessOwners(term).pipe(tap((obj) => {
+          this.isBusinessOwnerFoundLength = obj.length;
+          this.searchFailedForBusinessOwner = false
+        }), catchError(() => {
+          this.searchFailedForBusinessOwner = true;
+          return of([]);
+        }))
+      ),
+      tap((obj) => {
+        this.isBusinessOwnerFoundLength = obj.length;
+        this.searchingBusinessOwner = false
+      })
+    )
+
+  saves() {    
     this.spinner.show();
     let _controllerName = "users";
+    let bownerid: any = this.iFitUser.bownerid;
     let formData = new FormData();
     formData.append('first_name', this.iFitUser.first_name);
     formData.append('last_name', this.iFitUser.last_name);
@@ -119,6 +156,7 @@ export class AddEditSuperUsersComponent implements OnInit {
     formData.append('state', this.iFitUser.state);
     formData.append('zipcode', this.iFitUser.zipcode);
     formData.append('facility_code', this.iFitUser.facility_code);
+    formData.append('bownerid', bownerid.id);
 
     if (this._title.toLowerCase() === 'edit') {
       formData.append('id', this.iFitUser.id);
