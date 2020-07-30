@@ -15,14 +15,14 @@ export class WorkoutService {
     this._token = this._secureAuth.getAuthToken();
   }
 
-  get = (_controllerName: string) => {
+  get = (_controllerName: string, _method: string) => {
     const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
         Authorization: "Bearer " + this._token,
       }),
     };
-    let _url = `${environment.BASE_API_URL}${_controllerName}/`;
+    let _url = `${environment.BASE_API_URL}${_controllerName}/${_method}`;
     return this._http.get(_url, httpOptions);
   };
 
@@ -48,15 +48,36 @@ export class WorkoutService {
     return this._http.get(_url, httpOptions);
   };
 
-  update = (_controllerName: string, params: any) => {
+  getByCategoryId = (_controllerName: string, _method: string, _categoryId: any) => {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this._token,
+      }),
+    };
+    let _url = `${environment.BASE_API_URL}${_controllerName}/${_method}?categoryId=${_categoryId}`;
+    return this._http.get(_url, httpOptions);
+  };
+
+  update = (_controllerName: string, _method: string, params: any) => {
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: "Bearer " + this._token,
       }),
     };
-    let _url = `${environment.BASE_API_URL}${_controllerName}`;
+    let _url = `${environment.BASE_API_URL}${_controllerName}/${_method}`;
     console.log(params)
     return this._http.put(_url, params, httpOptions);
+  };
+
+  updateAssignment = (_controllerName: string, _method: string, body: any) => {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: "Bearer " + this._token,
+      }),
+    };
+    let _url = `${environment.BASE_API_URL}${_controllerName}/${_method}`;
+    return this._http.post(_url, body, httpOptions);
   };
 
   save = (_controllerName: string, params: any) => {

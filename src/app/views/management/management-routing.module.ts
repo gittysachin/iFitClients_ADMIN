@@ -163,6 +163,13 @@ const routes: Routes = [
     }
   },
   {
+    path: 'workouts/:id',
+    component: WorkoutsComponent,
+    data: {
+      title: 'Workouts'
+    }
+  },
+  {
     path: 'workouts/add',
     component: AddVideosComponent,
     data: {

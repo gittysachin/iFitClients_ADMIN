@@ -54,7 +54,7 @@ export class WorkoutCategoriesComponent implements OnInit {
   }
 
   showWorkout(obj: any) {
-    this._router.navigate(["/manage/workouts"]);
+    this._router.navigate([`/manage/workouts/${obj.id}`]);
   }
 
   AddWorkoutCategory(modal: any) {
