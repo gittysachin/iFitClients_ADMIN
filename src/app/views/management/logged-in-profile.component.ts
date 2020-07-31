@@ -105,6 +105,7 @@ export class LoggedInProfileComponent implements OnInit {
     this.spinner.show();
     let _controllerName = "users";
     let formData = new FormData();
+    formData.append('UserId', this.iFitUser.id);
     formData.append('first_name', this.iFitUser.first_name);
     formData.append('last_name', this.iFitUser.last_name);
     formData.append('avatar_uri', this.fileToUpload || this.iFitUser.avatar_uri);
