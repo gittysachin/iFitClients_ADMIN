@@ -49,7 +49,7 @@ export class WorkoutCategoriesComponent implements OnInit {
     let _controllerName = 'category?type=workout';
     this.catService.get(_controllerName).subscribe((cat: any) => {
       this.workout = cat.res;
-      console.log(cat.res)
+      // console.log(cat.res)
     });
   }
 

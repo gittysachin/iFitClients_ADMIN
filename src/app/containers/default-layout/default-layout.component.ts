@@ -59,7 +59,7 @@ export class DefaultLayoutComponent implements OnDestroy, OnInit {
         }
       }
     }
-    if (role === 'Admin') {
+    if (role === 'Admin' || role === 'Trainer' ) {
       this.navItem = [];
       for (let i = 0; i < navItems.length; i++) {
         if (navItems[i].name === 'Business Owners') {
@@ -71,6 +71,7 @@ export class DefaultLayoutComponent implements OnDestroy, OnInit {
         }
       }
     }
+    // TODO - coach or trainer
   }
 
   GetUserDetails() {

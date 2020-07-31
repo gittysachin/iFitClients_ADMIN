@@ -26,6 +26,17 @@ export class WorkoutService {
     return this._http.get(_url, httpOptions);
   };
 
+  getByWorkoutId = (_controllerName: string, _method: string, _workoutId: string) => {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this._token,
+      }),
+    };
+    let _url = `${environment.BASE_API_URL}${_controllerName}/${_method}?workoutId=${_workoutId}`;
+    return this._http.get(_url, httpOptions);
+  };
+
   getByType = (_controllerName: string, _method: string, _typeId: any) => {
     const httpOptions = {
       headers: new HttpHeaders({

@@ -87,24 +87,6 @@ export class WorkoutsComponent implements OnInit {
     });
   }
 
-  getClients() {
-    const _controllerName = "users";
-    const _methodName = "user/by-type";
-    const _type = this._types.find(t => t.type === 'Trainer');
-    const user = JSON.parse(sessionStorage.user);
-    if (user) {
-      this._users
-        .getByType(_controllerName, _methodName, _type.typeId)
-        .subscribe((ut: any) => {
-          if(ut && ut.res) {
-            ut.res.map(data => { data.full_name = data.first_name + " " + data.last_name; data.country = "US"; data.is_online = true; data.address = data.address1 + " " + data.address2; data.rating = 3; })
-            // this.gridView = ut.res;
-            this.gridView = ut.res;
-          }
-        });
-    }
-  }
-
   onFilter(inputValue: string): void {
     this.gridView = process(this.gridData, {
       filter: {
@@ -143,13 +125,32 @@ export class WorkoutsComponent implements OnInit {
   }
 
   AssignWorkout(modal: any, video: any) {
+    this._video = video;
     this.getClients();
     this.getAssigned();
-    this._video = video;
     this.modalReference = this.modalService.open(modal, {
       size: 'lg',
       centered: true
     })
+  }
+
+  getClients() {
+    this.gridView = [];
+    const _controllerName = "users";
+    const _methodName = "user/by-type";
+    const _type = this._types.find(t => t.type === 'Client');
+    const user = JSON.parse(sessionStorage.user);
+    if (user) {
+      this._users
+        .getByType(_controllerName, _methodName, _type.typeId)
+        .subscribe((ut: any) => {
+          if(ut && ut.res) {
+            ut.res.map(data => { data.full_name = data.first_name + " " + data.last_name; data.country = "US"; data.is_online = true; data.address = data.address1 + " " + data.address2; data.rating = 3; })
+            // this.gridView = ut.res;
+            this.gridView = ut.res;
+          }
+        });
+    }
   }
 
   getAssigned() {
@@ -157,16 +158,16 @@ export class WorkoutsComponent implements OnInit {
     const _controllerName = "workout";
     const _methodName = "assigned";
     const user = JSON.parse(sessionStorage.user);
+    console.log(this._video.workout.id)
     if (user) {
       this._workout
-        .get(_controllerName, _methodName)
+        .getByWorkoutId(_controllerName, _methodName, this._video.workout.id)
         .subscribe((ut: any) => {
           if(ut && ut.res) {
             this._assigned = [];
             ut.res.map(assigned => {
               this._assigned.push(assigned);
             })
-            // console.log(this._assigned)
             this.gridView.map(u => {
               this._assigned.map(a => {
                 if(u.id === a.user_id) {
@@ -190,7 +191,7 @@ export class WorkoutsComponent implements OnInit {
 
     let changed = [];
     this.mySelection.map(userId => {
-      changed.push({id: userId, assign: true});
+      changed.push({userId, assign: true});
     })
 
     this.gridView.map(u => {
@@ -201,23 +202,23 @@ export class WorkoutsComponent implements OnInit {
         }
       });
       if(!found) {
-        changed.push({id: u.id, assign: false});
+        changed.push({userId: u.id, assign: false});
       }
     })
 
-    let url = this._video.url;
-
     const user = JSON.parse(sessionStorage.user);
-    console.log(user.bownerid, url, changed);
+    // console.log(user.bownerid, this._video, changed);
 
     const _controllerName = "workout";
     const _methodName = "editAssignment"
 
     if (user) {
       this._workout
-        .updateAssignment(_controllerName, _methodName, {business_owner_id: user.bownerid, url, changed})
+        .updateAssignment(_controllerName, _methodName, {business_owner_id: user.bownerid, workout_id: this._video.workout.id, changed})
         .subscribe((ut: any) => {
-          console.log(ut)
+          if(ut && ut.res) {
+            this.modalReference.dismiss();
+          }
         })
     }
 
@@ -260,23 +261,6 @@ export class WorkoutsComponent implements OnInit {
   }
 
   getAllWorkoutVideos() {
-    // this._http.get(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=PL-8fyND0sPmNpAtmAEMQgYCUFxR_ayE8p&key=AIzaSyDGoB0_NkgBZvzWkpRHrLxz2TTOxxIYjUI&maxResults=25`).subscribe((res: any) => {
-    //   if (res && res.items && res.items.length > 0) {
-    //     let itemsObj = res.items;
-    //     for (let i = 0; i < itemsObj.length; i++) {
-    //       let item: any = {};
-    //       item.publishedAt = itemsObj[i].snippet.publishedAt;
-    //       item.title = itemsObj[i].snippet.title;
-    //       item.description = itemsObj[i].snippet.description;
-    //       item.channelTitle = itemsObj[i].snippet.channelTitle;
-    //       item.thumbnails = itemsObj[i].snippet.thumbnails.medium;
-    //       item.contentDetails = itemsObj[i].contentDetails;
-    //       this.workoutVideoChannel.push(item);
-    //       console.log(item)
-    //     }
-    //   }
-    // })
-
     const _controllerName = "workout";
     const _methodName = "by-category";
     const user = JSON.parse(sessionStorage.user);
@@ -297,6 +281,7 @@ export class WorkoutsComponent implements OnInit {
               item.thumbnails.width = 320;
               item.title = workout.name;
               item.url = url;
+              item.workout = workout;
               item.contentDetails = workout.description;
               this.workoutVideoChannel.push(item);
             })
