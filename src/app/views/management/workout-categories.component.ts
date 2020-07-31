@@ -68,8 +68,6 @@ export class WorkoutCategoriesComponent implements OnInit {
     let _controllerName = 'category';
     this.catService.getById(_controllerName, id).subscribe((cat: any) => {
       this.category = cat.res;
-      console.log("this.category")
-      console.log(this.category)
       this.modalReference = this.modalService.open(modal, {
         size: 'lg',
         centered: true

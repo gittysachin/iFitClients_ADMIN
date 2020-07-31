@@ -93,6 +93,13 @@ const routes: Routes = [
     }
   },
   {
+    path: 'client-management/edit/:id',
+    component: AddEditClientComponent,
+    data: {
+      title: 'Clients Management'
+    }
+  },
+  {
     path: 'trainers-management',
     component: TrainersComponent,
     data: {

@@ -1,11 +1,134 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.2)" size="medium" color="#2699fb" type="timer" [fullScreen]="true">
+  <p style="color: #2699fb"> Please wait... </p>
+</ngx-spinner>
 <div class="animated fadeIn">
-  <div class="full-page-header">
-    <div class="back-arrow" (click)="BackToList()">
-      <i class="fa fa-chevron-left"></i>&nbsp;<span>Clients</span>
-    </div>
-    <label class="user-name">{{_userObject.full_name}}</label>
-  </div>
-  <div style="margin-top: 5%;">
-    <div id="chartContainer" style="width: 100%; height: 500px"></div>
+  <div class="adjust-view">
+      <form name="profile" (ngSubmit)="f.form.valid && saves()" #f="ngForm" enctype="multipart/form-data" novalidate>
+          <div class="row">
+              <div class="col-md-6" style="background-color: #f1f1f1;">
+                  <br />
+                  <div class="row">
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label>
+                                  <h6>First name</h6>
+                              </label>
+                              <input type="text" class="form-control" id="first_name" name="first_name"
+                                  [(ngModel)]="iFitUser.first_name" />
+                          </div>
+                          <div class="form-group">
+                              <label>
+                                  <h6>Last name</h6>
+                              </label>
+                              <input type="text" class="form-control" id="last_name" name="last_name"
+                                  [(ngModel)]="iFitUser.last_name" />
+                          </div>
+                          <div class="form-group">
+                              <label>
+                                  <h6>Email</h6>
+                              </label>
+                              <input type="text" class="form-control" id="email" name="email"
+                                  [(ngModel)]="iFitUser.email" />
+                          </div>
+                          <div class="form-group">
+                              <label>
+                                  <h6>Last Login</h6>
+                              </label>
+                              <input type="text" disabled class="form-control" name="last_login_date"
+                                  id="last_login_date" [(ngModel)]="iFitUser.last_login_date" maxlength="6"
+                                  placeholder="Last Login Date" />
+                          </div>
+                          <div class="form-group">
+                              <label>
+                                  <h6>Address 1</h6>
+                              </label>
+                              <input class="form-control" placeholder="Address 1" name="Address1" id="Address1"
+                                  [(ngModel)]="iFitUser.address1" />
+                          </div>
+                          <div class="form-group">
+                              <label>
+                                  <h6>Address 2</h6>
+                              </label>
+                              <input class="form-control" placeholder="Address 2" id="address2" name="address2"
+                                  [(ngModel)]="iFitUser.address2" />
+                          </div>
+                          <div class="form-group">
+                              <label>
+                                  <h6>City</h6>
+                              </label>
+                              <input type="text" class="form-control" name="city" id="city"
+                                  [(ngModel)]="iFitUser.city" placeholder="City" />
+                          </div>
+                          <div class="form-group">
+                              <label>
+                                  <h6>State/Province</h6>
+                              </label>
+                              <input type="text" class="form-control" name="state" id="state"
+                                  [(ngModel)]="iFitUser.state" placeholder="State" />
+                          </div>
+                          <div class="form-group">
+                              <label>
+                                  <h6>Postal Code</h6>
+                              </label>
+                              <input type="text" class="form-control" name="ZipCode" id="ZipCode"
+                                  [(ngModel)]="iFitUser.zipcode" maxlength="6" placeholder="Zipcode" />
+                          </div>
+                          <div class="form-group">
+                              <label>
+                                  <h6>Birthday</h6>
+                              </label>
+                              <div class="input-box-container">
+                                  <input class="input-box" class="form-control" placeholder="Click to select a date"
+                                      angular-mydatepicker name="dob" (click)="dp.toggleCalendar()"
+                                      [(ngModel)]="iFitUser.dob" [options]="myDpOptions" #dp="angular-mydatepicker" />
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label>
+                                  <h6>Gender</h6>
+                              </label>
+                              <select class="form-control" id="sex" name="sex" [(ngModel)]="iFitUser.sex"
+                                  #sex="ngModel">
+                                  <option value=null>Select Gender</option>
+                                  <option *ngFor='let item of sexType' value="{{item.id}}">{{item.value}}</option>
+                              </select>
+                          </div>
+                          <div class="form-group">
+                              <label>
+                                  <h6>About</h6>
+                              </label>
+                              <textarea class="form-control" rows="3" id="about" name="about"
+                                  placeholder="Write about this user..." [(ngModel)]="iFitUser.about"
+                                  #about="ngModel"></textarea>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label>
+                                  <h6>Date Added</h6>
+                              </label>
+                              <input type="text" id="created_at" name="created_at" disabled
+                                  [(ngModel)]="iFitUser.created_at" class="form-control" />
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-3 text-center">
+                  <img src={{iFitUser.avatar_uri}} id='userImage' alt="Avatar" style="border-radius: 50%;height: 220px;
+                          width: 220px;border: 1px solid #2699fb;" />
+                  <input type="file" style="margin-top: 5%;" #fileInput (change)="uploadFile($event.target.files)">
+              </div>
+              <div class="col-md-3">
+                  <div class="col-md-12">
+                      <button class="btn btn-primary" style="width: 100%;border-radius: 100px;">Update</button>
+                  </div><br />
+                  <div class="col-md-12">
+                      <button class="btn btn-primary" (click)="BackToList()"
+                          style="width: 100%;border-radius: 100px;">Cancel</button>
+                  </div>
+              </div>
+          </div>
+      </form>
+      <br />
   </div>
 </div>
