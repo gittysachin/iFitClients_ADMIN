@@ -81,6 +81,12 @@
                                 {{dataItem.facility_code}}
                             </ng-template>
                         </kendo-grid-column>
+                        <kendo-grid-column field="type" title="User Type" [width]="60"
+                            title="User Type">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.type}}
+                            </ng-template>
+                        </kendo-grid-column>
                     </kendo-grid-column-group>
                     <kendo-grid-column-group title="Contact Details" [columnMenu]="false">
                         <kendo-grid-column field="phone" title="Contact No." [width]="70" title="Contact No.">

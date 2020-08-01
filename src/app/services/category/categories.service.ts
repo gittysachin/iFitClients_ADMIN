@@ -23,7 +23,7 @@ export class CategoriesService {
         'Authorization': 'Bearer ' + this._token
       })
     };
-    let _url = `${environment.BASE_API_URL}${_controllerName}/`;
+    let _url = `${environment.BASE_API_URL}${_controllerName}`;
     return this._http.get(_url, httpOptions);
   }
 

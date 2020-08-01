@@ -64,7 +64,7 @@ export class WorkoutCategoriesComponent implements OnInit {
     })
   }
 
-  editNutritionCategory(modal: any, id) {
+  editNutritionCategory(modal: any, id: any) {
     let _controllerName = 'category';
     this.catService.getById(_controllerName, id).subscribe((cat: any) => {
       this.category = cat.res;
@@ -75,7 +75,7 @@ export class WorkoutCategoriesComponent implements OnInit {
     })
   }
 
-  addCategory(categoryForm, modal) {
+  addCategory(categoryForm: any, modal: any) {
     if (categoryForm.form.status == "INVALID") {
       Object.keys(categoryForm.controls).forEach(key => {
         categoryForm.controls[key].markAsDirty();
@@ -92,7 +92,7 @@ export class WorkoutCategoriesComponent implements OnInit {
         this.category = {
           name: "",
           id: '',
-          type: "Nutrition",
+          type: "workout",
           business_owner_id: "",
           is_active: false
         };
@@ -111,7 +111,7 @@ export class WorkoutCategoriesComponent implements OnInit {
         this.category = {
           name: "",
           id: '',
-          type: "Nutrition",
+          type: "workout",
           business_owner_id: "",
           is_active: false
         };

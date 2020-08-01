@@ -21,7 +21,7 @@ export class iFItSuperUser {
     state: string;
     zipcode: string;
     created_at: string;
-    bownerid: string;
+    bownerid: any;
 
     constructor() {
         this.id = "";

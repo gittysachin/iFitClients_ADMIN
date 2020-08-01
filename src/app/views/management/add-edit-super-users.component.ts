@@ -80,6 +80,13 @@ export class AddEditSuperUsersComponent implements OnInit {
             }
           };
         }
+        if(this.iFitUser.bownerid) {
+          let selectedBOwnerId = {
+            id: ud.res.bownerid,
+            title: ud.res.business_name
+          }
+          this.iFitUser.bownerid = selectedBOwnerId; 
+        }
         this.spinner.hide();
       });
     }
@@ -156,10 +163,10 @@ export class AddEditSuperUsersComponent implements OnInit {
     formData.append('state', this.iFitUser.state);
     formData.append('zipcode', this.iFitUser.zipcode);
     formData.append('facility_code', this.iFitUser.facility_code);
-    formData.append('bownerid', bownerid.id);
+    formData.append('bownerid', bownerid.bownerid);
 
     if (this._title.toLowerCase() === 'edit') {
-      formData.append('id', this.iFitUser.id);
+      formData.append('UserId', this.iFitUser.id);
       this.service.update(_controllerName, formData).subscribe((ur: any) => {
         this.spinner.hide();
         if (ur !== undefined && ur !== 'undefined' && ur !== null && ur !== 'null' && ur !== '') {
