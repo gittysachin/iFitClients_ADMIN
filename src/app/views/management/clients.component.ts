@@ -148,20 +148,23 @@ export class ClientsComponent implements OnInit {
     let obj = {
       id: dataItem.id,
       full_name: dataItem.full_name,
+      avatar_uri: dataItem.avatar_uri
     };
     let data = btoa(JSON.stringify(obj));
-    localStorage.setItem("selectedclient", JSON.stringify(data));
-    // this._router.navigate([`/manage/client-management/edit/${obj.id}`]);
-    this._router.navigate([`/manage/client-management/profile/${obj.id}`]);
+    localStorage.setItem("selectedclient", JSON.stringify(data));    
+    this._router.navigate([`/manage/client-management/edit`]);
+    // this._router.navigate([`/manage/client-management/profile/${obj.id}`]);
   }
 
   onCellClick(e: any) {
     let obj = {
       id: e.dataItem.id,
       full_name: e.dataItem.full_name,
+      avatar_uri: e.avatar_uri
     };
     let data = btoa(JSON.stringify(obj));
     localStorage.setItem("selectedclient", JSON.stringify(data));
-    this._router.navigate([`/manage/client-management/profile/${obj.id}`]);
+    this._router.navigate([`/manage/client-management/edit`]);
+    // this._router.navigate([`/manage/client-management/profile/${obj.id}`]);
   }
 }

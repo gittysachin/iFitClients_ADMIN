@@ -16,7 +16,7 @@ import { NgxSpinnerService } from "ngx-spinner";
   providers: [{ provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }]
 })
 export class ClientProfileComponent implements OnInit {
-    id: number;
+  id: number;
   _title: string;
   iFitUser: iFItSuperUser;
   _secureAuth: SecureAuth;
@@ -48,7 +48,9 @@ export class ClientProfileComponent implements OnInit {
   _isEmailValid: boolean;
   _userObject: any
   constructor(private _router: Router, private modalService: NgbModal, private _activatedRoute: ActivatedRoute, private service: UsersService, private spinner: NgxSpinnerService) {
-    this.id = this._activatedRoute.snapshot.params.id;
+    let user = localStorage.getItem('selectedclient');
+    let parsedUser: any = atob(JSON.parse(user));
+    this.id = JSON.parse(parsedUser).id;
     this._secureAuth = new SecureAuth();
     if (this.id) {
       this._title = "Edit";
@@ -84,7 +86,7 @@ export class ClientProfileComponent implements OnInit {
     this.GetAllUserTypes();
   }
 
-    GetUserById() {
+  GetUserById() {
     this.spinner.show();
     if (this.id !== undefined && this.id !== null) {
       let _controllerName = 'users';
@@ -118,9 +120,9 @@ export class ClientProfileComponent implements OnInit {
     this.spinner.hide();
   }
 
-  BackToList() {
-    this._router.navigate(["/dashboard"]);
-  }
+  // BackToList() {
+  //   this._router.navigate(["/dashboard"]);
+  // }
 
   uploadFile(files: File) {
     this.fileToUpload = files[0];
@@ -165,8 +167,8 @@ export class ClientProfileComponent implements OnInit {
 
   }
 
-  // BackToList() {
-  //   this._router.navigate(["/manage/client-management"]);
-  // }
+  BackToList() {
+    this._router.navigate(["/manage/client-management"]);
+  }
 
 }

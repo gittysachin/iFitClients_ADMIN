@@ -71,7 +71,6 @@ export class DefaultLayoutComponent implements OnDestroy, OnInit {
         }
       }
     }
-    // TODO - coach or trainer
   }
 
   GetUserDetails() {
