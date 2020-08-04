@@ -21,6 +21,9 @@
           <img [src]="image.url" style="width: 100%;" height="250px" (click)="open(i)" />
           <p>&nbsp;</p>
           <p><strong>{{image.name}}</strong></p>
+          <p><button style="background: rgb(38, 153, 251);" class="btn btn-sm btn-primary" type="button" (click)="AssignNutrition(Nutrition, image)">
+            <i class="fa fa-share fa-lg"></i>&nbsp;Share
+          </button></p>
         </div>
       </div>
     </div>
@@ -64,5 +67,76 @@
         <button type="button" class="btn btn-primary" (click)="SaveNutritions(nutritionsForm,addNutritions);" style="height: 50px;width: 100%; border-radius: 100px;">Add Nutritions</button>
       </div>
     </form>
+  </div>
+</ng-template>
+<ng-template #Nutrition let-modal>
+  <div class="modal-header text-center">
+    <h4 class="modal-title" id="modal-basic-title">Assign Nutrition</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <div class="animated fadeIn">
+        <div class="card">
+          <div class="card-body">
+            <div class="col-12 table-responsive">
+                <!-- <ag-grid-angular #agGrid style="width: 100%; height: calc(100vh - 30vh)" id="myGrid"
+                    class="ag-theme-material" [columnDefs]="columnDefs" [autoGroupColumnDef]="autoGroupColumnDef"
+                    [defaultColDef]="defaultColDef" [suppressRowClickSelection]="true" [groupSelectsChildren]="true"
+                    [debug]="true" [rowSelection]="rowSelection" [enableRangeSelection]="true" [pagination]="false"
+                    [paginationPageSize]="paginationPageSize" [paginationNumberFormatter]="paginationNumberFormatter"
+                    [rowData]="rowData" [rowDragManaged]="true" [enableMultiRowDragging]="true"
+                    (gridReady)="onGridReady($event)">
+                </ag-grid-angular> -->
+                <kendo-grid [kendoGridBinding]="gridView" kendoGridSelectBy="id" [selectedKeys]="mySelection"
+                    [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true"
+                    [resizable]="true" [columnMenu]="{ filter: true }" style="height: calc(100vh - 25vh);">
+                    <kendo-grid-checkbox-column [width]="45" [headerClass]="{'text-center': true}"
+                        [class]="{'text-center': true}" [resizable]="false" [columnMenu]="false" showSelectAll="true">
+                    </kendo-grid-checkbox-column>
+                    <kendo-grid-column-group title="Clients" [columnMenu]="false">
+                        <kendo-grid-column field="full_name" title="Name" [width]="220">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="customer-photo" [ngStyle]="{'background-image' : photoURL(dataItem)}"></div>
+                                <div class="customer-name">{{ dataItem.first_name + " " + dataItem.last_name }}</div>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <!-- <kendo-grid-column field="country" title="Country" [width]="100" [class]="{'text-center': true}"
+                            [resizable]="false">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <img class="flag" [src]="flagURL(dataItem)" width="30">
+                            </ng-template>
+                        </kendo-grid-column> -->
+                        <!-- <kendo-grid-column field="is_online" title="Status" [width]="100"
+                            [class]="{'text-center': true}" [resizable]="false" filter="boolean">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <span *ngIf="dataItem.is_online === true" class="badge badge-success">Online</span>
+                                <span *ngIf="dataItem.is_online === false" class="badge badge-danger">Offline</span>
+                            </ng-template>
+                        </kendo-grid-column> -->
+                    </kendo-grid-column-group>
+                    <!-- <kendo-grid-column-group title="Performance" [columnMenu]="false">
+                        <kendo-grid-column field="rating" title="Rating" [width]="110" [resizable]="false"
+                            filter="numeric">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <kendo-rating [value]="dataItem.rating" [max]="5"></kendo-rating>
+                            </ng-template>
+                        </kendo-grid-column>
+                    </kendo-grid-column-group> -->
+                    <!-- <kendo-grid-column-group title="Contacts" [columnMenu]="false">
+                        <kendo-grid-column field="phone" title="Phone" [width]="130">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="address" title="Address" [width]="200">
+                        </kendo-grid-column>
+                    </kendo-grid-column-group> -->
+                </kendo-grid>
+            </div>
+          </div>
+        </div>
+    </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-primary" (click)="assignToUsers();" style="height: 50px;width: 100%; border-radius: 100px;">Assign</button>
+      </div>
   </div>
 </ng-template>

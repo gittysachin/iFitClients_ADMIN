@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { UsersService } from '../../services/users/users.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Lightbox } from 'ngx-lightbox';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -6,6 +7,7 @@ import { NutritionService } from '../../services/nutritions/nutritions.service';
 import { NutritionList } from '../../../assets/resources/nutritions-list';
 import { NgForm } from "@angular/forms";
 import { NgxSpinnerService } from "ngx-spinner";
+import { images } from './images';
 
 @Component({
   selector: 'app-nutritions',
@@ -18,7 +20,8 @@ export class NutritionsComponent implements OnInit {
   id: any;
   _title: string;
   _decryptedUser: any;
-  _userObject: any
+  _userObject: any;
+  _image: any;
   nutritionsData = [];
   public _albums: Array < any > = [];
   files: any = [];
@@ -30,13 +33,19 @@ export class NutritionsComponent implements OnInit {
     description: ''
   }
   modalReference: any;
+  _types: any;
   CatID: any;
   formData = new FormData();
+  public gridData: any[];
+  public gridView: any[];
+  public mySelection: string[] = [];
+
   constructor(private _router: Router,
     private _activatedRoute: ActivatedRoute,
     private nutService: NutritionService,
     private _lightbox: Lightbox,
     private spinner: NgxSpinnerService,
+    private _users: UsersService,
     private modalService: NgbModal) {
     const selectedClient = localStorage.getItem('selectedclient');
     const parsedClientJson = JSON.parse(selectedClient);
@@ -63,6 +72,12 @@ export class NutritionsComponent implements OnInit {
       };
       this._albums.push(album);
     }
+    this._types = [
+      { typeId: "40eec394-8d0f-426a-a43a-f4a55e3efea1", type: "Admin" },
+      { typeId: "51882a3c-33f9-4ff5-a721-4d1ba86430e2", type: "Trainer" },
+      { typeId: "5a9b19d7-09c2-4c88-8254-c19277896160", type: "Client" },
+      { typeId: "ae78a41e-f9a7-4bc9-b020-df5239be398f", type: "Super Admin" }
+    ];
     this.CatID = this._activatedRoute.snapshot.queryParamMap.get("catid");
     this.getAll();
   }
@@ -78,7 +93,65 @@ export class NutritionsComponent implements OnInit {
     }
     this.nutService.get(_controllerName, obj).subscribe((cat: any) => {
       this.nutritionsData = cat.res.results;
+      console.log(this.nutritionsData)
     });
+  }
+
+  AssignNutrition(modal: any, image: any) {
+    this._image = image;
+    this.getClients();
+    this.getAssigned();
+    this.modalReference = this.modalService.open(modal, {
+      size: 'lg',
+      centered: true
+    })
+  }
+
+  getClients() {
+    this.gridView = [];
+    const _controllerName = "users";
+    const _methodName = "user/by-type";
+    const _type = this._types.find(t => t.type === 'Client');
+    const user = JSON.parse(sessionStorage.user);
+    if (user) {
+      this._users
+        .getByType(_controllerName, _methodName, _type.typeId)
+        .subscribe((ut: any) => {
+          if(ut && ut.res) {
+            ut.res.map(data => { data.full_name = data.first_name + " " + data.last_name; data.country = "US"; data.is_online = true; data.address = data.address1 + " " + data.address2; data.rating = 3; })
+            // this.gridView = ut.res;
+            this.gridView = ut.res;
+          }
+        });
+    }
+  }
+
+  getAssigned() {
+    // this.mySelection = [];
+    // const _controllerName = "workout";
+    // const _methodName = "assigned";
+    // const user = JSON.parse(sessionStorage.user);
+    // console.log(this._video.workout.id)
+    // if (user) {
+    //   this._workout
+    //     .getByWorkoutId(_controllerName, _methodName, this._video.workout.id)
+    //     .subscribe((ut: any) => {
+    //       if(ut && ut.res) {
+    //         this._assigned = [];
+    //         ut.res.map(assigned => {
+    //           this._assigned.push(assigned);
+    //         })
+    //         this.gridView.map(u => {
+    //           this._assigned.map(a => {
+    //             if(u.id === a.user_id) {
+    //               this.mySelection.push(u.id);
+    //             }
+    //           })
+    //         })
+    //         // console.log(this.mySelection);
+    //       }
+    //     });
+    // }
   }
 
   open(index: number): void {
@@ -87,6 +160,13 @@ export class NutritionsComponent implements OnInit {
 
   close(): void {
     this._lightbox.close();
+  }
+
+  photoURL(dataItem: any): string {
+    const code: string = dataItem.img_id + dataItem.gender;
+    const image: any = images;
+
+    return image[code];
   }
 
   AddNew(modal: any) {
