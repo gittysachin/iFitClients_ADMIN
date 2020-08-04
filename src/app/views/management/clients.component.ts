@@ -151,7 +151,8 @@ export class ClientsComponent implements OnInit {
     };
     let data = btoa(JSON.stringify(obj));
     localStorage.setItem("selectedclient", JSON.stringify(data));
-    this._router.navigate([`/manage/client-management/edit/${obj.id}`]);
+    // this._router.navigate([`/manage/client-management/edit/${obj.id}`]);
+    this._router.navigate([`/manage/client-management/profile/${obj.id}`]);
   }
 
   onCellClick(e: any) {
@@ -161,6 +162,6 @@ export class ClientsComponent implements OnInit {
     };
     let data = btoa(JSON.stringify(obj));
     localStorage.setItem("selectedclient", JSON.stringify(data));
-    this._router.navigate([`/manage/client-management/edit`]);
+    this._router.navigate([`/manage/client-management/profile/${obj.id}`]);
   }
 }

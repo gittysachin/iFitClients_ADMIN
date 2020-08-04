@@ -156,6 +156,13 @@ const routes: Routes = [
     }
   },
   {
+    path: 'client-management/profile/:id',
+    component: ClientProfileComponent,
+    data: {
+      title: 'Profile'
+    }
+  },
+  {
     path: 'workout/category',
     component: WorkoutCategoriesComponent,
     data: {
