@@ -40,7 +40,7 @@
 </div>
 <ng-template #NutritionCategory let-modal>
   <div class="modal-header text-center">
-    <h4 class="modal-title" id="modal-basic-title">Add Nutrition Category</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{this.modalTitle}} Nutrition Category</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -59,7 +59,7 @@
         <input type="checkbox" id="is_active" [(ngModel)]="category.is_active" #is_active="ngModel" name="is_active" />
       </div>
       <div class="form-group">
-        <button type="button" class="btn btn-primary" (click)="addCategory(categoryForm,NutritionCategory);" style="height: 50px;width: 100%; border-radius: 100px;">Add Nutrition Category</button>
+        <button type="button" class="btn btn-primary" (click)="addCategory(categoryForm,NutritionCategory);" style="height: 50px;width: 100%; border-radius: 100px;">{{this.modalTitle}} Nutrition Category</button>
       </div>
     </form>
   </div>

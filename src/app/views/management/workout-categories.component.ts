@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Nutrition } from './nutrition-categories';
+// import { Nutrition } from './nutrition-categories';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CategoriesService } from '../../services/category/categories.service';
@@ -17,11 +17,12 @@ export class WorkoutCategoriesComponent implements OnInit {
   category: any = {
     name: "",
     id: '',
-    type: "Nutrition",
+    type: "workout",
     business_owner_id: "",
     is_active: true
   };
   public workout = [];
+  modalTitle: string;
 
   constructor(
     private _router: Router,
@@ -58,6 +59,14 @@ export class WorkoutCategoriesComponent implements OnInit {
   }
 
   AddWorkoutCategory(modal: any) {
+    this.modalTitle = 'Add';
+    this.category = {
+      name: "",
+      id: '',
+      type: "workout",
+      business_owner_id: "",
+      is_active: true
+    };
     this.modalReference = this.modalService.open(modal, {
       size: 'lg',
       centered: true
@@ -65,6 +74,7 @@ export class WorkoutCategoriesComponent implements OnInit {
   }
 
   editNutritionCategory(modal: any, id: any) {
+    this.modalTitle = 'Edit';
     let _controllerName = 'category';
     this.catService.getById(_controllerName, id).subscribe((cat: any) => {
       this.category = cat.res;
@@ -103,7 +113,7 @@ export class WorkoutCategoriesComponent implements OnInit {
       this.spinner.show();
       const userData = sessionStorage.getItem('user');
       const userid = JSON.parse(userData);
-      this.category.business_owner_id = userid.id;
+      this.category.business_owner_id = userid.bownerid;
       let _controllerName = 'category';
       this.catService.save(_controllerName, this.category).subscribe((cat: any) => {
         this.modalReference.dismiss();

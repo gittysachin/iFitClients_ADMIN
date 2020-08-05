@@ -23,6 +23,7 @@ export class NutritionCategoriesComponent implements OnInit {
     business_owner_id: "",
     is_active: true
   };
+  modalTitle: string;
   constructor(
     private _router: Router,
     private modalService: NgbModal,
@@ -42,7 +43,7 @@ export class NutritionCategoriesComponent implements OnInit {
     let _controllerName = 'category?type=nutrition';
     this.getAll();
   }
-  ngOnInit() {}
+  ngOnInit() { }
 
   showNutrition(obj: any) {
     this._router.navigate(["/manage/nutrition"], {
@@ -58,14 +59,23 @@ export class NutritionCategoriesComponent implements OnInit {
   }
 
   AddNutritionCategory(modal: any) {
+    this.modalTitle = 'Add';
+    this.category = {
+      name: "",
+      id: '',
+      type: "Nutrition",
+      business_owner_id: "",
+      is_active: true
+    };
     this.modalReference = this.modalService.open(modal, {
       size: 'lg',
       centered: true
     })
   }
 
-  editNutritionCategory(modal: any, id) {
+  editNutritionCategory(modal: any, id: any) {
     let _controllerName = 'category';
+    this.modalTitle = 'Edit';
     this.catService.getById(_controllerName, id).subscribe((cat: any) => {
       this.category = cat.res;
       this.modalReference = this.modalService.open(modal, {
@@ -91,7 +101,7 @@ export class NutritionCategoriesComponent implements OnInit {
         this.category = {
           name: "",
           id: '',
-          type: "Nutrition",
+          type: "nutrition",
           business_owner_id: "",
           is_active: false
         };
@@ -102,7 +112,7 @@ export class NutritionCategoriesComponent implements OnInit {
       this.spinner.show();
       const userData = sessionStorage.getItem('user');
       const userid = JSON.parse(userData);
-      this.category.business_owner_id = userid.id;
+      this.category.business_owner_id = userid.bownerid;
       let _controllerName = 'category';
       this.catService.save(_controllerName, this.category).subscribe((cat: any) => {
         this.modalReference.dismiss();
@@ -110,7 +120,7 @@ export class NutritionCategoriesComponent implements OnInit {
         this.category = {
           name: "",
           id: '',
-          type: "Nutrition",
+          type: "nutrition",
           business_owner_id: "",
           is_active: false
         };
