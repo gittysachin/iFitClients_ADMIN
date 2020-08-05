@@ -23,7 +23,7 @@ export class NutritionsComponent implements OnInit {
   _userObject: any;
   _image: any;
   nutritionsData = [];
-  public _albums: Array < any > = [];
+  public _albums: Array<any> = [];
   files: any = [];
   nutritions: any = {
     business_owner_id: '',
@@ -35,7 +35,6 @@ export class NutritionsComponent implements OnInit {
   modalReference: any;
   _types: any;
   CatID: any;
-  formData = new FormData();
   public gridData: any[];
   public gridView: any[];
   public mySelection: string[] = [];
@@ -82,7 +81,7 @@ export class NutritionsComponent implements OnInit {
     this.getAll();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   getAll() {
     let _controllerName = 'nutrition';
@@ -93,17 +92,16 @@ export class NutritionsComponent implements OnInit {
     }
     this.nutService.get(_controllerName, obj).subscribe((cat: any) => {
       this.nutritionsData = cat.res.results;
-      console.log(this.nutritionsData)
     });
   }
 
   AssignNutrition(modal: any, image: any) {
     this._image = image;
     this.getClients();
-    this.getAssigned();
     this.modalReference = this.modalService.open(modal, {
       size: 'lg',
-      centered: true
+      centered: true,
+      backdrop: "static"
     })
   }
 
@@ -117,7 +115,7 @@ export class NutritionsComponent implements OnInit {
       this._users
         .getByType(_controllerName, _methodName, _type.typeId)
         .subscribe((ut: any) => {
-          if(ut && ut.res) {
+          if (ut && ut.res) {
             ut.res.map(data => { data.full_name = data.first_name + " " + data.last_name; data.country = "US"; data.is_online = true; data.address = data.address1 + " " + data.address2; data.rating = 3; })
             // this.gridView = ut.res;
             this.gridView = ut.res;
@@ -126,33 +124,6 @@ export class NutritionsComponent implements OnInit {
     }
   }
 
-  getAssigned() {
-    // this.mySelection = [];
-    // const _controllerName = "workout";
-    // const _methodName = "assigned";
-    // const user = JSON.parse(sessionStorage.user);
-    // console.log(this._video.workout.id)
-    // if (user) {
-    //   this._workout
-    //     .getByWorkoutId(_controllerName, _methodName, this._video.workout.id)
-    //     .subscribe((ut: any) => {
-    //       if(ut && ut.res) {
-    //         this._assigned = [];
-    //         ut.res.map(assigned => {
-    //           this._assigned.push(assigned);
-    //         })
-    //         this.gridView.map(u => {
-    //           this._assigned.map(a => {
-    //             if(u.id === a.user_id) {
-    //               this.mySelection.push(u.id);
-    //             }
-    //           })
-    //         })
-    //         // console.log(this.mySelection);
-    //       }
-    //     });
-    // }
-  }
 
   open(index: number): void {
     this._lightbox.open(this._albums, index);
@@ -170,9 +141,17 @@ export class NutritionsComponent implements OnInit {
   }
 
   AddNew(modal: any) {
+    this.nutritions = {
+      business_owner_id: '',
+      category_id: '',
+      url: '',
+      name: '',
+      description: ''
+    }
     this.modalReference = this.modalService.open(modal, {
       size: 'lg',
-      centered: true
+      centered: true,
+      backdrop: "static"
     })
   }
 
@@ -197,21 +176,20 @@ export class NutritionsComponent implements OnInit {
 
     this.spinner.show();
     const userData = sessionStorage.getItem('user');
-    const userid = JSON.parse(userData);
-    this.nutritions.business_owner_id = userid.id;
+    const user = JSON.parse(userData);
     this.nutritions.category_id = this.CatID;
-
-    this.formData.append("business_owner_id", userid.id);
-    this.formData.append("category_id", this.CatID);
-    this.formData.append("name", this.nutritions.name);
-    this.formData.append("description", this.nutritions.description);
-    this.formData.append("url", this.files[0]);
+    let formData = new FormData();
+    formData.append("business_owner_id", user.bownerid);
+    formData.append("category_id", this.CatID);
+    formData.append("name", this.nutritions.name);
+    formData.append("description", this.nutritions.description);
+    formData.append("url", this.files[0]);
 
 
     if (this.id) {
-      this.formData.append("id", this.id);
+      formData.append("id", this.id);
       let _controllerName = 'nutrition';
-      this.nutService.update(_controllerName, this.formData).subscribe((res1: any) => {
+      this.nutService.update(_controllerName, formData).subscribe((res1: any) => {
         this.modalReference.dismiss();
         nutritionsForm.reset();
         this.nutritions = {
@@ -226,7 +204,7 @@ export class NutritionsComponent implements OnInit {
       });
     } else {
       let _controllerName = 'nutrition/save';
-      this.nutService.save(_controllerName, this.formData).subscribe((cat: any) => {
+      this.nutService.save(_controllerName, formData).subscribe((cat: any) => {
         this.modalReference.dismiss();
         nutritionsForm.reset();
         this.nutritions = {

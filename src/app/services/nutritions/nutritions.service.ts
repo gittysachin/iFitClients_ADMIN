@@ -45,7 +45,6 @@ export class NutritionService {
   save = (_controllerName: string, params: any) => {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + this._token
       })
     };
@@ -56,7 +55,6 @@ export class NutritionService {
   update = (_controllerName: string, params: any) => {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + this._token
       })
     };
