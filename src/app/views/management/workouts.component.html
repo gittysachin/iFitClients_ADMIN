@@ -24,6 +24,9 @@
             <i class="fa fa-share fa-lg"></i>&nbsp;Share
           </button></p>
         </div>
+        <div class="col-md-12 text-center" *ngIf="workoutVideoChannel.length === 0">
+          <p style="font-size: 20px; font-weight: bolder;">No workouts available for this category!</p>
+        </div>
       </div>
     </div>
   </div>
@@ -40,14 +43,6 @@
         <div class="card">
           <div class="card-body">
             <div class="col-12 table-responsive">
-                <!-- <ag-grid-angular #agGrid style="width: 100%; height: calc(100vh - 30vh)" id="myGrid"
-                    class="ag-theme-material" [columnDefs]="columnDefs" [autoGroupColumnDef]="autoGroupColumnDef"
-                    [defaultColDef]="defaultColDef" [suppressRowClickSelection]="true" [groupSelectsChildren]="true"
-                    [debug]="true" [rowSelection]="rowSelection" [enableRangeSelection]="true" [pagination]="false"
-                    [paginationPageSize]="paginationPageSize" [paginationNumberFormatter]="paginationNumberFormatter"
-                    [rowData]="rowData" [rowDragManaged]="true" [enableMultiRowDragging]="true"
-                    (gridReady)="onGridReady($event)">
-                </ag-grid-angular> -->
                 <kendo-grid [kendoGridBinding]="gridView" kendoGridSelectBy="id" [selectedKeys]="mySelection"
                     [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true"
                     [resizable]="true" [columnMenu]="{ filter: true }" style="height: calc(100vh - 25vh);">
@@ -61,34 +56,7 @@
                                 <div class="customer-name">{{ dataItem.first_name + " " + dataItem.last_name }}</div>
                             </ng-template>
                         </kendo-grid-column>
-                        <!-- <kendo-grid-column field="country" title="Country" [width]="100" [class]="{'text-center': true}"
-                            [resizable]="false">
-                            <ng-template kendoGridCellTemplate let-dataItem>
-                                <img class="flag" [src]="flagURL(dataItem)" width="30">
-                            </ng-template>
-                        </kendo-grid-column> -->
-                        <!-- <kendo-grid-column field="is_online" title="Status" [width]="100"
-                            [class]="{'text-center': true}" [resizable]="false" filter="boolean">
-                            <ng-template kendoGridCellTemplate let-dataItem>
-                                <span *ngIf="dataItem.is_online === true" class="badge badge-success">Online</span>
-                                <span *ngIf="dataItem.is_online === false" class="badge badge-danger">Offline</span>
-                            </ng-template>
-                        </kendo-grid-column> -->
                     </kendo-grid-column-group>
-                    <!-- <kendo-grid-column-group title="Performance" [columnMenu]="false">
-                        <kendo-grid-column field="rating" title="Rating" [width]="110" [resizable]="false"
-                            filter="numeric">
-                            <ng-template kendoGridCellTemplate let-dataItem>
-                                <kendo-rating [value]="dataItem.rating" [max]="5"></kendo-rating>
-                            </ng-template>
-                        </kendo-grid-column>
-                    </kendo-grid-column-group> -->
-                    <!-- <kendo-grid-column-group title="Contacts" [columnMenu]="false">
-                        <kendo-grid-column field="phone" title="Phone" [width]="130">
-                        </kendo-grid-column>
-                        <kendo-grid-column field="address" title="Address" [width]="200">
-                        </kendo-grid-column>
-                    </kendo-grid-column-group> -->
                 </kendo-grid>
             </div>
           </div>

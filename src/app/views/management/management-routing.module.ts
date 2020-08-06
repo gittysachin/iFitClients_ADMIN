@@ -184,7 +184,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'workouts/add',
+    path: 'workouts/:id/add',
     component: AddVideosComponent,
     data: {
       title: 'Add Videos'

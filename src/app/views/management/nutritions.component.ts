@@ -59,19 +59,6 @@ export class NutritionsComponent implements OnInit {
     } else {
       this._title = "Add";
     }
-    for (let i = 0; i < NutritionList.length; i++) {
-      const src = NutritionList[i].img_url;
-      const caption = NutritionList[i].name;
-      const thumb = NutritionList[i].img_url;
-      const date = NutritionList[i].name
-      const album = {
-        src: src,
-        caption: caption,
-        thumb: thumb,
-        date: date
-      };
-      this._albums.push(album);
-    }
     this._types = [
       { typeId: "40eec394-8d0f-426a-a43a-f4a55e3efea1", type: "Admin" },
       { typeId: "51882a3c-33f9-4ff5-a721-4d1ba86430e2", type: "Trainer" },
@@ -94,6 +81,19 @@ export class NutritionsComponent implements OnInit {
     }
     this.nutService.get(_controllerName, obj).subscribe((cat: any) => {
       this.nutritionsData = cat.res.results;
+      for (let i = 0; i < this.nutritionsData.length; i++) {
+        const src = this.nutritionsData[i].url;
+        const caption = this.nutritionsData[i].name;
+        const thumb = this.nutritionsData[i].url;
+        const date = this.nutritionsData[i].created_at
+        const album = {
+          src: src,
+          caption: caption,
+          thumb: thumb,
+          date: date
+        };
+        this._albums.push(album);
+      }
     });
   }
 

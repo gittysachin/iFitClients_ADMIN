@@ -61,10 +61,10 @@ export class WorkoutsComponent implements OnInit {
     this.userSearchParams = new UserSearchParams();
     this.itemsPerPage = this._userRequestParams.PageSize;
     this._secureAuth = new SecureAuth();
-    // let sidebarRootElement = document.getElementById("root");
-    // sidebarRootElement.style.display = "block";
-    // let sidebarChildElement = document.getElementById("child");
-    // sidebarChildElement.style.display = "none";
+    let sidebarRootElement = document.getElementById("root");
+    sidebarRootElement.style.display = "block";
+    let sidebarChildElement = document.getElementById("child");
+    sidebarChildElement.style.display = "none";
     this._types = [
       { typeId: "40eec394-8d0f-426a-a43a-f4a55e3efea1", type: "Admin" },
       { typeId: "51882a3c-33f9-4ff5-a721-4d1ba86430e2", type: "Trainer" },
@@ -275,7 +275,7 @@ export class WorkoutsComponent implements OnInit {
               var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
               var match = url.match(regExp);
               let videoId = (match&&match[7].length==11)? match[7] : false;
-              item.thumbnails = {};
+              item.thumbnails = {}; 
               item.thumbnails.url = `http://img.youtube.com/vi/${videoId}/0.jpg`;
               item.thumbnails.height = 180;
               item.thumbnails.width = 320;
@@ -291,7 +291,7 @@ export class WorkoutsComponent implements OnInit {
   }
 
   AddNewVideo() {
-    this._router.navigate(["/manage/workouts/add"]);
+    this._router.navigate([`/manage/workouts/${this.id }/add`]);
   }
 
   BackToList() {
