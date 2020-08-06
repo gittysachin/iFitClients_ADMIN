@@ -3,6 +3,7 @@ import { UserMaster } from '../../models/users/user-master';
 import { SecureAuth } from '../../helpers/secure-auth';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UsersService } from '../../services/users/users.service';
+import { SnapshotService } from '../../services/snapshots/snapshots.service';
 import { ProgressPics } from '../../../assets/resources/progress';
 import { Lightbox } from 'ngx-lightbox';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -25,12 +26,17 @@ export class ProgressPicsComponent implements OnInit {
   _secureAuth: SecureAuth;
   _isMobileValid: boolean;
   _isEmailValid: boolean;
-  _userObject: any
+  _userObject: any;
+  items: any;
+  pageNo: any;
   public _albums: Array<any> = [];
+  public gridView: any[];
   files: any = [];
+  count: any;
   constructor(private _router: Router,
     private _activatedRoute: ActivatedRoute,    
     private _userSevice: UsersService,
+    private _snapshots: SnapshotService,
     private _lightbox: Lightbox,
     private modalService: NgbModal) {
     const selectedClient = localStorage.getItem('selectedclient');
@@ -46,30 +52,63 @@ export class ProgressPicsComponent implements OnInit {
       this._title = "Add";
     }
     this._user = new UserMaster();
-    for (let i = 0; i < ProgressPics.length; i++) {
-      const src = ProgressPics[i].img_url;
-      const caption = ProgressPics[i].id;
-      const thumb = ProgressPics[i].img_url;
-      const date = ProgressPics[i].date
-      const album = {
-        src: src,
-        caption: caption,
-        thumb: thumb,
-        date: date
-      };
-      this._albums.push(album);
-    }
+    this.items = [];
+    this.pageNo = 1;
+    this.count = 0;
+    this.getPics(this.pageNo);
 
   }
 
   ngOnInit() {
+    this.items = Array(150).fill(0).map((x, i) => ({id: (i+1)}));
   }
 
-  BackToList() {
-    this._router.navigate(["/manage/client-management"]);
-  }
-
-  open(index: number): void {
+  getPics(param: any) {
+    // if(param) {
+    //   this.pageNo = param || this.pageNo;
+    // }
+    console.log(param);
+    console.log(this.pageNo)
+    this._albums = [];
+    let obj = {
+      "pageNo": this.pageNo,
+      "pageSize": 10,
+      "user_id": this._userObject.id
+    }
+    const _controllerName = "snapshots";
+    const user = JSON.parse(sessionStorage.user);
+    if (user) {
+      this._snapshots
+        .get(_controllerName, obj)
+        .subscribe((ut: any) => {
+          if (ut && ut.res && ut.res.results) {
+            console.log(ut.res.results);
+            // const ProgressPics = ProgressPics;
+            const ProgressPics = ut.res.results;
+            for (let i = 0; i < ProgressPics.length; i++) {
+              const src = ProgressPics[i].url;
+              const caption = ProgressPics[i].id;
+              const thumb = ProgressPics[i].url;
+              const date = ProgressPics[i].created_at;
+              const album = {
+                src: src,
+                caption: caption,
+                thumb: thumb,
+                date: date
+              };
+              this.count = this.count + 1;
+              this._albums.push(album);
+            }
+          }
+        });
+      }
+    }
+    
+    BackToList() {
+      this._router.navigate(["/manage/client-management"]);
+    }
+    
+    open(index: number): void {
     this._lightbox.open(this._albums, index);
   }
 

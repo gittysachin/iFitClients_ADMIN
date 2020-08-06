@@ -16,12 +16,28 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3 text-center" *ngFor='let image of _albums; let i=index'>
-                <p>&nbsp;</p>
-                <img [src]="image.thumb" style="width: 100%;" (click)="open(i)" />
-                <p>&nbsp;</p>
-                <p><strong>{{image.date | date:'MMMM dd, yyyy'}}</strong></p>
+            <div class="card-body">
+                <div class="col-md-3 text-center" *ngFor='let image of _albums; let i=index'>
+                    <p>&nbsp;</p>
+                    <img [src]="image.thumb" style="width: 100%;" (click)="open(i)" />
+                    <p>&nbsp;</p>
+                    <p><strong>{{image.date | date:'MMMM dd, yyyy'}}</strong></p>
+                </div>    
             </div>
+            <div class="card-footer pb-0 pt-3">
+                <!-- <jw-pagination [items]="items" (changePage)="getPics($event)"></jw-pagination> -->
+                <jw-pagination [items]="items"></jw-pagination>
+            </div>
+            <!-- <kendo-grid [kendoGridBinding]="gridView" kendoGridSelectBy="id" [selectedKeys]="mySelection"
+                    [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true"
+                    [resizable]="true" [columnMenu]="{ filter: true }" style="height: calc(100vh - 25vh);">
+                    <div class="col-md-3 text-center" *ngFor='let image of _albums; let i=index'>
+                        <p>&nbsp;</p>
+                        <img [src]="image.thumb" style="width: 100%;" (click)="open(i)" />
+                        <p>&nbsp;</p>
+                        <p><strong>{{image.date | date:'MMMM dd, yyyy'}}</strong></p>
+                    </div>        
+            </kendo-grid> -->
         </div>
     </div>
 </div>

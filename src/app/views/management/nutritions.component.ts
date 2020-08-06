@@ -100,6 +100,7 @@ export class NutritionsComponent implements OnInit {
   AssignNutrition(modal: any, image: any) {
     this._image = image;
     this.getClients();
+    this.getAssigned();
     this.modalReference = this.modalService.open(modal, {
       size: 'lg',
       centered: true,
