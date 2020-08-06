@@ -36,6 +36,7 @@ import { AddEditSuperUsersComponent } from './add-edit-super-users.component';
 import { LoggedInProfileComponent } from './logged-in-profile.component';
 import { AngularMyDatePickerModule } from 'angular-mydatepicker';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { JwPaginationComponent } from 'jw-angular-pagination';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     WorkoutCategoriesComponent,
     SuperUsersComponent,
     AddEditSuperUsersComponent,
-    LoggedInProfileComponent],
+    LoggedInProfileComponent,
+    JwPaginationComponent],
   imports: [
     CommonModule,
     ManagementRoutingModule,
