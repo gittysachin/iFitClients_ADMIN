@@ -38,6 +38,7 @@ export class NutritionsComponent implements OnInit {
   public gridData: any[];
   public gridView: any[];
   public mySelection: string[] = [];
+  public _assigned: any[];
 
   constructor(private _router: Router,
     private _activatedRoute: ActivatedRoute,
@@ -78,6 +79,7 @@ export class NutritionsComponent implements OnInit {
       { typeId: "ae78a41e-f9a7-4bc9-b020-df5239be398f", type: "Super Admin" }
     ];
     this.CatID = this._activatedRoute.snapshot.queryParamMap.get("catid");
+    this._assigned = [];
     this.getAll();
   }
 
@@ -124,6 +126,76 @@ export class NutritionsComponent implements OnInit {
     }
   }
 
+  getAssigned() {
+    this.mySelection = [];
+    const _controllerName = "nutrition";
+    const _methodName = "assigned";
+    const user = JSON.parse(sessionStorage.user);
+    console.log(this._image);
+    if (user) {
+      this.nutService
+        .getAssignedById(_controllerName, _methodName, this._image.id)
+        .subscribe((ut: any) => {
+          if(ut && ut.res) {
+            this._assigned = [];
+            ut.res.map(assigned => {
+              this._assigned.push(assigned);
+            })
+            console.log(this._assigned)
+            this.gridView.map(u => {
+              this._assigned.map(a => {
+                if(u.id === a.user_id) {
+                  this.mySelection.push(u.id);
+                }
+              })
+            })
+            console.log(this.mySelection);
+          }
+        });
+    }
+  }
+
+  assignToUsers() { // (usersListForm)
+    // if (usersListForm.form.status == "INVALID") {
+    //   Object.keys(usersListForm.controls).forEach(key => {
+    //     usersListForm.controls[key].markAsDirty();
+    //   });
+    //   return false;
+    // }
+
+    let changed = [];
+    this.mySelection.map(userId => {
+      changed.push({userId, assign: true});
+    })
+
+    this.gridView.map(u => {
+      let found = false;
+      this.mySelection.map(userId => {
+        if(u.id === userId) {
+          found = true;
+        }
+      });
+      if(!found) {
+        changed.push({userId: u.id, assign: false});
+      }
+    })
+
+    const user = JSON.parse(sessionStorage.user);
+    // console.log(user.bownerid, this._video, changed);
+
+    const _controllerName = "nutrition";
+    const _methodName = "editAssignment"
+
+    if (user) {
+      this.nutService
+        .updateAssignment(_controllerName, _methodName, {business_owner_id: user.bownerid, nutrition_id: this._image.id, changed})
+        .subscribe((ut: any) => {
+          if(ut && ut.res) {
+            this.modalReference.dismiss();
+          }
+        })
+    }
+  }
 
   open(index: number): void {
     this._lightbox.open(this._albums, index);

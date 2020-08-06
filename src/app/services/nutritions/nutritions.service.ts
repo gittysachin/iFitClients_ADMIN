@@ -42,6 +42,27 @@ export class NutritionService {
     return this._http.get(_url, httpOptions);
   }
 
+  getAssignedById = (_controllerName: string, _method: string, params: any) => {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this._token
+      })
+    };
+    let _url = `${environment.BASE_API_URL}${_controllerName}/${_method}/${params}`;
+    return this._http.get(_url, httpOptions);
+  }
+
+  updateAssignment = (_controllerName: string, _method: string, body: any) => {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: "Bearer " + this._token,
+      }),
+    };
+    let _url = `${environment.BASE_API_URL}${_controllerName}/${_method}`;
+    return this._http.post(_url, body, httpOptions);
+  };
+  
   save = (_controllerName: string, params: any) => {
     const httpOptions = {
       headers: new HttpHeaders({
