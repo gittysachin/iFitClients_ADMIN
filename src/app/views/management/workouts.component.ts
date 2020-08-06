@@ -38,6 +38,7 @@ export class WorkoutsComponent implements OnInit {
   public gridView: any[];
 
   public mySelection: string[] = [];
+  videoType: any = '';
 
   constructor(private modalService: NgbModal,
     private _router: Router,
@@ -56,7 +57,7 @@ export class WorkoutsComponent implements OnInit {
       let sidebarChildElement = document.getElementById('child');
       sidebarChildElement.style.display = 'none';
     }
-    
+
     this._userRequestParams = new UserRequestParams();
     this.userSearchParams = new UserSearchParams();
     this.itemsPerPage = this._userRequestParams.PageSize;
@@ -79,12 +80,21 @@ export class WorkoutsComponent implements OnInit {
     this.getAllWorkoutVideos();
   }
 
-  open(index: any, model: any) {
-    this.videoURL = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${this.workoutVideoChannel[index].contentDetails.videoId}`);
-    this.modalService.open(model, {
-      size: 'xl',
-      centered: true
-    });
+  open(index: any, model: any, videoUrl: string, videoType: string) {
+    if (videoType === 'youtube') {
+      const getVideoId = videoUrl.split('=')[1];
+      this.videoURL = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${getVideoId}`);
+    } else {
+      this.videoURL = this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
+    }
+    this.videoType = videoType;
+    setTimeout(() => {
+      this.modalService.open(model, {
+        size: 'xl',
+        centered: true,
+        backdrop: "static"
+      });
+    }, 500)
   }
 
   onFilter(inputValue: string): void {
@@ -130,7 +140,8 @@ export class WorkoutsComponent implements OnInit {
     this.getAssigned();
     this.modalReference = this.modalService.open(modal, {
       size: 'lg',
-      centered: true
+      centered: true,
+      backdrop: "static"
     })
   }
 
@@ -144,7 +155,7 @@ export class WorkoutsComponent implements OnInit {
       this._users
         .getByType(_controllerName, _methodName, _type.typeId)
         .subscribe((ut: any) => {
-          if(ut && ut.res) {
+          if (ut && ut.res) {
             ut.res.map(data => { data.full_name = data.first_name + " " + data.last_name; data.country = "US"; data.is_online = true; data.address = data.address1 + " " + data.address2; data.rating = 3; })
             // this.gridView = ut.res;
             this.gridView = ut.res;
@@ -163,14 +174,14 @@ export class WorkoutsComponent implements OnInit {
       this._workout
         .getByWorkoutId(_controllerName, _methodName, this._video.workout.id)
         .subscribe((ut: any) => {
-          if(ut && ut.res) {
+          if (ut && ut.res) {
             this._assigned = [];
             ut.res.map(assigned => {
               this._assigned.push(assigned);
             })
             this.gridView.map(u => {
               this._assigned.map(a => {
-                if(u.id === a.user_id) {
+                if (u.id === a.user_id) {
                   this.mySelection.push(u.id);
                 }
               })
@@ -191,18 +202,18 @@ export class WorkoutsComponent implements OnInit {
 
     let changed = [];
     this.mySelection.map(userId => {
-      changed.push({userId, assign: true});
+      changed.push({ userId, assign: true });
     })
 
     this.gridView.map(u => {
       let found = false;
       this.mySelection.map(userId => {
-        if(u.id === userId) {
+        if (u.id === userId) {
           found = true;
         }
       });
-      if(!found) {
-        changed.push({userId: u.id, assign: false});
+      if (!found) {
+        changed.push({ userId: u.id, assign: false });
       }
     })
 
@@ -214,9 +225,9 @@ export class WorkoutsComponent implements OnInit {
 
     if (user) {
       this._workout
-        .updateAssignment(_controllerName, _methodName, {business_owner_id: user.bownerid, workout_id: this._video.workout.id, changed})
+        .updateAssignment(_controllerName, _methodName, { business_owner_id: user.bownerid, workout_id: this._video.workout.id, changed })
         .subscribe((ut: any) => {
-          if(ut && ut.res) {
+          if (ut && ut.res) {
             this.modalReference.dismiss();
           }
         })
@@ -268,21 +279,30 @@ export class WorkoutsComponent implements OnInit {
       this._workout
         .getByCategoryId(_controllerName, _methodName, this.id)
         .subscribe((ut: any) => {
-          if(ut && ut.res) {
+          if (ut && ut.res) {
             ut.res.map(workout => {
               let item: any = {};
-              let url = workout.url;
+              let url: string = workout.url;
               var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
               var match = url.match(regExp);
-              let videoId = (match&&match[7].length==11)? match[7] : false;
-              item.thumbnails = {}; 
-              item.thumbnails.url = `http://img.youtube.com/vi/${videoId}/0.jpg`;
+              let videoId = (match && match[7].length == 11) ? match[7] : false;
+              item.thumbnails = {};
+              if (url && url.includes('youtube')) {
+                item.thumbnails.url = `http://img.youtube.com/vi/${videoId}/0.jpg`;
+              } else {
+                item.thumbnails.url = `../../../assets/img/play.gif`;
+              }
               item.thumbnails.height = 180;
               item.thumbnails.width = 320;
               item.title = workout.name;
               item.url = url;
               item.workout = workout;
               item.contentDetails = workout.description;
+              if (url && url.includes('youtube')) {
+                item.videoType = 'youtube';
+              } else {
+                item.videoType = 'local';
+              }
               this.workoutVideoChannel.push(item);
             })
           }
@@ -291,7 +311,7 @@ export class WorkoutsComponent implements OnInit {
   }
 
   AddNewVideo() {
-    this._router.navigate([`/manage/workouts/${this.id }/add`]);
+    this._router.navigate([`/manage/workouts/${this.id}/add`]);
   }
 
   BackToList() {

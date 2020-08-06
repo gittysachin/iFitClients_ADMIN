@@ -43,7 +43,11 @@ export class AddVideosComponent implements OnInit {
     formData.append("category_id", this.categoryId);
     formData.append("name", this.workouts.name);
     formData.append("description", this.workouts.description);
-    formData.append("url", this.files[0]);
+    if (this.files && this.files.length > 0) {
+      formData.append("url", this.files[0]);
+    } else {
+      formData.append("url", this.workouts.url);
+    }
     this.service.save(controllerName, formData).subscribe((res: any) => {
       if (res) {
         setTimeout(() => {
@@ -58,6 +62,6 @@ export class AddVideosComponent implements OnInit {
   }
 
   goBack() {
-    this._router.navigate(["/manage/workouts"]);
+    this._router.navigate([`/manage/workouts/${this.categoryId}`]);
   }
 }

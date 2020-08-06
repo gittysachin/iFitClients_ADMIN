@@ -159,8 +159,8 @@ export class ClientsComponent implements OnInit {
   onCellClick(e: any) {
     let obj = {
       id: e.dataItem.id,
-      full_name: e.dataItem.full_name,
-      avatar_uri: e.avatar_uri
+      full_name: e.dataItem.first_name + ' ' + e.dataItem.last_name,
+      avatar_uri: e.dataItem.avatar_uri
     };
     let data = btoa(JSON.stringify(obj));
     localStorage.setItem("selectedclient", JSON.stringify(data));
