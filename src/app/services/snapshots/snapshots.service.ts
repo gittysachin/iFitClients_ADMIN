@@ -42,13 +42,13 @@ export class SnapshotService {
     return this._http.get(_url, httpOptions);
   }
   
-  save = (_controllerName: string, params: any) => {
+  save = (_controllerName: string, _method: string, params: any) => {
     const httpOptions = {
       headers: new HttpHeaders({
         'Authorization': 'Bearer ' + this._token
       })
     };
-    let _url = `${environment.BASE_API_URL}${_controllerName}`;
+    let _url = `${environment.BASE_API_URL}${_controllerName}/${_method}`;
     return this._http.post(_url, params, httpOptions);
   }
 

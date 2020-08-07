@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UsersService } from '../../services/users/users.service';
 import { SnapshotService } from '../../services/snapshots/snapshots.service';
 import { ProgressPics } from '../../../assets/resources/progress';
+import { NgxSpinnerService } from "ngx-spinner";
 import { Lightbox } from 'ngx-lightbox';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -27,6 +28,15 @@ export class ProgressPicsComponent implements OnInit {
   _isMobileValid: boolean;
   _isEmailValid: boolean;
   _userObject: any;
+
+  snapshot: any = {
+    user_id: '',
+    url: '',
+    snapshot_date: '',
+    pose: ''
+  }
+  modalReference: any;
+
   items: any;
   pageNo: any;
   public _albums: Array<any> = [];
@@ -38,12 +48,14 @@ export class ProgressPicsComponent implements OnInit {
     private _userSevice: UsersService,
     private _snapshots: SnapshotService,
     private _lightbox: Lightbox,
+    private spinner: NgxSpinnerService,
     private modalService: NgbModal) {
     const selectedClient = localStorage.getItem('selectedclient');
     const parsedClientJson = JSON.parse(selectedClient);
     if (parsedClientJson) {
       let obj = atob(parsedClientJson);
       this._userObject = JSON.parse(obj);
+      this.snapshot.user_id = this._userObject.id;
       let sidebarRootElement = document.getElementById('root');
       sidebarRootElement.style.display = 'none';
       let sidebarChildElement = document.getElementById('child');
@@ -55,7 +67,7 @@ export class ProgressPicsComponent implements OnInit {
     this.items = [];
     this.pageNo = 1;
     this.count = 0;
-    this.getPics(this.pageNo);
+    this.getPics();
 
   }
 
@@ -63,12 +75,10 @@ export class ProgressPicsComponent implements OnInit {
     this.items = Array(150).fill(0).map((x, i) => ({id: (i+1)}));
   }
 
-  getPics(param: any) {
+  getPics() {
     // if(param) {
     //   this.pageNo = param || this.pageNo;
     // }
-    console.log(param);
-    console.log(this.pageNo)
     this._albums = [];
     let obj = {
       "pageNo": this.pageNo,
@@ -82,7 +92,7 @@ export class ProgressPicsComponent implements OnInit {
         .get(_controllerName, obj)
         .subscribe((ut: any) => {
           if (ut && ut.res && ut.res.results) {
-            console.log(ut.res.results);
+            // console.log(ut.res.results);
             // const ProgressPics = ProgressPics;
             const ProgressPics = ut.res.results;
             for (let i = 0; i < ProgressPics.length; i++) {
@@ -103,6 +113,59 @@ export class ProgressPicsComponent implements OnInit {
         });
       }
     }
+
+    SaveProgress(snapshotsForm, model) {
+      if (snapshotsForm.form.status == "INVALID") {
+        Object.keys(snapshotsForm.controls).forEach(key => {
+          snapshotsForm.controls[key].markAsDirty();
+        });
+        return false;
+      }
+
+      console.log(this.files, this.snapshot.pose, this.snapshot.snapshot_date)
+  
+      this.spinner.show();
+      const userData = sessionStorage.getItem('user');
+      const user = JSON.parse(userData);
+      let formData = new FormData();
+      formData.append("user_id", this.snapshot.user_id);
+      formData.append("snapshot_date", this.snapshot.snapshot_date);
+      formData.append("pose", this.snapshot.pose);
+      formData.append("url", this.files[0]);
+  
+  
+      if (this.id) {
+        formData.append("id", this.id);
+        let _controllerName = 'nutrition';
+        this._snapshots.update(_controllerName, formData).subscribe((res1: any) => {
+          this.modalReference.dismiss();
+          snapshotsForm.reset();
+          this.files = [];
+          this.snapshot = {
+            user_id: this._userObject.id,
+            url: '',
+            snapshot_date: ''
+          }
+          this.getPics();
+          this.spinner.hide();
+        });
+      } else {
+        let _controllerName = 'snapshots';
+        let _methodName = 'save';
+        this._snapshots.save(_controllerName, _methodName, formData).subscribe((cat: any) => {
+          this.modalReference.dismiss();
+          this.files = [];
+          snapshotsForm.reset();
+          this.snapshot = {
+            user_id: this._userObject.id,
+            url: '',
+            snapshot_date: ''
+          }
+          this.getPics();
+          this.spinner.hide();
+        });
+      }
+    }
     
     BackToList() {
       this._router.navigate(["/manage/client-management"]);
@@ -119,7 +182,7 @@ export class ProgressPicsComponent implements OnInit {
   uploadFile(event: any) {
     for (let index = 0; index < event.length; index++) {
       const element = event[index];
-      this.files.push(element.name)
+      this.files.push(element)
     }
   }
 
@@ -128,7 +191,12 @@ export class ProgressPicsComponent implements OnInit {
   }
 
   AddPics(modal: any) {
-    this.modalService.open(modal, {
+    this.snapshot = {
+      user_id: this._userObject.id,
+      url: '',
+      snapshot_date: ''
+    }
+    this.modalReference = this.modalService.open(modal, {
       backdrop: true,
       centered: true,
       size: 'lg'
