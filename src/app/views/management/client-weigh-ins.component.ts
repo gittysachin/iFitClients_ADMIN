@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MeasurementsService } from "../../services/measurements/measurements.service";
 import { SecureAuth } from '../../helpers/secure-auth';
 import { UserMaster } from '../../models/users/user-master';
 import { WeighIns } from '../../../assets/resources/weigh-in';
@@ -25,7 +26,7 @@ export class ClientWeighInsComponent implements OnInit {
   _isEmailValid: boolean;
   _userObject: any
   public gridData: any[] = WeighIns;
-  constructor(private _router: Router, private modalService: NgbModal) {
+  constructor(private _router: Router, private modalService: NgbModal, private _measurements: MeasurementsService) {
     const selectedClient = localStorage.getItem('selectedclient');
     const parsedClientJson = JSON.parse(selectedClient);
     if (parsedClientJson) {
@@ -42,6 +43,22 @@ export class ClientWeighInsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getWeignIns();
+  }
+
+  getWeignIns() {
+    const _controllerName = "measurements";
+    const user = JSON.parse(sessionStorage.user);
+    if (user) {
+      this._measurements
+        .get(_controllerName, {id: this._userObject.id})
+        .subscribe((ut: any) => {
+          if(ut && ut.res) {
+            console.log(ut.res);
+            this.gridData = ut.res;
+          }
+        });
+    }
   }
 
   AddWeighIn(modal: any) {

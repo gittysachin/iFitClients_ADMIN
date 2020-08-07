@@ -122,13 +122,11 @@ export class ProgressPicsComponent implements OnInit {
         });
         return false;
       }
-
-      console.log(this.files, this.snapshot.pose, this.snapshot.snapshot_date)
   
       this.spinner.show();
       const userData = sessionStorage.getItem('user');
       const user = JSON.parse(userData);
-      let date = moment(this.snapshot.snapshot_date)
+      let date = moment(this.snapshot.snapshot_date);
       let formData = new FormData();
       formData.append("user_id", this.snapshot.user_id);
       formData.append("snapshot_date", date.format());

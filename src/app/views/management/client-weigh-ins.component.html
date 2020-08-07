@@ -10,7 +10,7 @@
             <div class="col-md-3">
                 <div class="card text-white bg-info">
                     <div class="card-body text-center">
-                        <div class="weigh-ins-statistics">Totla Weight Loss</div>
+                        <div class="weigh-ins-statistics">Total Weight Loss</div>
                         <div class="text-value weigh-ins-count">-100lbs</div>
                     </div>
                 </div>
@@ -42,14 +42,20 @@
                 <kendo-grid [kendoGridBinding]="gridData" [reorderable]="true" style="height: calc(100vh - 40vh);">
                     <kendo-grid-column field="Date" title="Date" [width]="80">
                         <ng-template kendoGridCellTemplate let-dataItem>
-                            {{dataItem.Date | date: 'MMMM dd, yyyy'}}
+                            {{dataItem.created_at | date: 'MMMM dd, yyyy'}}
                         </ng-template>
                     </kendo-grid-column>
 
                     <kendo-grid-column field="Weight" title="Weight(lbs)" [width]="80">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.weight}}
+                        </ng-template>
                     </kendo-grid-column>
 
                     <kendo-grid-column field="BodyFat" title="Body Fat(%)" [width]="80">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.body_fat_percentage}}
+                        </ng-template>
                     </kendo-grid-column>
                     <kendo-grid-checkbox-column [width]="45" [headerClass]="{'text-center': true}"
                         [class]="{'text-center': true}" [resizable]="false" [columnMenu]="false" showSelectAll="true">
