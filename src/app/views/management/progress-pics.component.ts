@@ -8,6 +8,7 @@ import { ProgressPics } from '../../../assets/resources/progress';
 import { NgxSpinnerService } from "ngx-spinner";
 import { Lightbox } from 'ngx-lightbox';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import moment from 'moment';
 
 @Component({
   selector: 'app-progress-pics',
@@ -127,9 +128,10 @@ export class ProgressPicsComponent implements OnInit {
       this.spinner.show();
       const userData = sessionStorage.getItem('user');
       const user = JSON.parse(userData);
+      let date = moment(this.snapshot.snapshot_date)
       let formData = new FormData();
       formData.append("user_id", this.snapshot.user_id);
-      formData.append("snapshot_date", this.snapshot.snapshot_date);
+      formData.append("snapshot_date", date.format());
       formData.append("pose", this.snapshot.pose);
       formData.append("url", this.files[0]);
   
