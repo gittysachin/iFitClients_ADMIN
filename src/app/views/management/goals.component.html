@@ -27,35 +27,41 @@
                 <kendo-grid [kendoGridBinding]="gridData" [reorderable]="true" style="height: calc(100vh - 40vh);">
                     <kendo-grid-column field="DateCreated" title="Date Created" [width]="80">
                         <ng-template kendoGridCellTemplate let-dataItem>
-                            {{dataItem.DateCreated | date: 'MMMM dd, yyyy'}}
+                            {{dataItem.created_at | date: 'MMMM dd, yyyy'}}
                         </ng-template>
                     </kendo-grid-column>
 
                     <kendo-grid-column field="Goal" title="Goal" [width]="80">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.goal_value}}
+                        </ng-template>
                     </kendo-grid-column>
 
-                    <kendo-grid-column field="Progress" title="Progress" [width]="80">
+                    <kendo-grid-column field="Rewards" title="Rewards" [width]="80">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.rewards_on_completion}}
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="Punishment" title="Punishment" [width]="80">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.punishment_on_failing}}
+                        </ng-template>
                     </kendo-grid-column>
 
                     <kendo-grid-column field="Active" title="Active" [width]="80">
                         <ng-template kendoGridCellTemplate let-dataItem>
-                            <span *ngIf="dataItem.Active===true"><i class="fa fa-circle"
+                            <span *ngIf="dataItem.is_active===true"><i class="fa fa-circle"
                                     style="color: green;"></i></span>
-                            <span *ngIf="dataItem.Active===false">
+                            <span *ngIf="dataItem.is_active===false">
                                 <i class="fa fa-circle" style="color: red;"></i>
                             </span>
                         </ng-template>
                     </kendo-grid-column>
 
-                    <kendo-grid-column field="DeadLine" title="DeadLine" [width]="80">
-                        <ng-template kendoGridCellTemplate let-dataItem>
-                            {{dataItem.DeadLine | date: 'MMMM dd, yyyy'}}
-                        </ng-template>
-                    </kendo-grid-column>
-
-                    <kendo-grid-checkbox-column [width]="45" [headerClass]="{'text-center': true}"
+                    <!-- <kendo-grid-checkbox-column [width]="45" [headerClass]="{'text-center': true}"
                         [class]="{'text-center': true}" [resizable]="false" [columnMenu]="false" showSelectAll="true">
-                    </kendo-grid-checkbox-column>
+                    </kendo-grid-checkbox-column> -->
                 </kendo-grid>
             </div>
         </div>

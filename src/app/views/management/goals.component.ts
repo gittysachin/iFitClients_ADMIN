@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserMaster } from '../../models/users/user-master';
 import { SecureAuth } from '../../helpers/secure-auth';
 import { GoalsData } from '../../../assets/resources/goal';
+import { GoalsService } from "../../services/goals/goals.service";
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -24,7 +25,7 @@ export class GoalsComponent implements OnInit {
   _isEmailValid: boolean;
   _userObject: any
   public gridData: any[] = GoalsData;
-  constructor(private _router: Router, private modalService: NgbModal) {
+  constructor(private _router: Router, private modalService: NgbModal, private _goals: GoalsService) {
     const selectedClient = localStorage.getItem('selectedclient');
     const parsedClientJson = JSON.parse(selectedClient);
     if (parsedClientJson) {
@@ -41,7 +42,25 @@ export class GoalsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getGoals();
   }
+
+  getGoals() {
+    const _controllerName = "goals";
+    const _methodName = "getGoals";
+    const user = JSON.parse(sessionStorage.user);
+    if (user) {
+      this._goals
+        .get(_controllerName, _methodName, {id: this._userObject.id})
+        .subscribe((ut: any) => {
+          if(ut && ut.res) {
+            console.log(ut.res);
+            this.gridData = ut.res;
+          }
+        });
+    }
+  }
+
   AddGoal(modal: any) {
     this.modalService.open(modal, {
       backdrop: true,

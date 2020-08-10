@@ -43,10 +43,10 @@ export class ClientWeighInsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getWeignIns();
+    this.getWeighIns();
   }
 
-  getWeignIns() {
+  getWeighIns() {
     const _controllerName = "measurements";
     const user = JSON.parse(sessionStorage.user);
     if (user) {
