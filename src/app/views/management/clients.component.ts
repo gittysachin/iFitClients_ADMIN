@@ -82,7 +82,7 @@ export class ClientsComponent implements OnInit {
         .getByType(_controllerName, _methodName, _type.typeId)
         .subscribe((ut: any) => {
           if(ut && ut.res) {
-            ut.res.map(data => { data.country = "US"; data.is_online = true; data.address = data.address1 + " " + data.address2; data.rating = 3; })
+            ut.res.map(data => { data.address = data.address1 + " " + data.address2; data.sign_up = (new Date(data.created_at)).toDateString(); data.last_login = (new Date(data.last_login_date)).toDateString(); })
             this.gridView = ut.res;
           }
         });
